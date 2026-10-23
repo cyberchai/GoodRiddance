@@ -1,121 +1,102 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+import { useEffect, useState } from 'react'
+import { loadRestaurants } from './data.js'
 import './App.css'
 
+function formatPrice(price) {
+  return price == null ? '' : `$${price.toFixed(2)}`
+}
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [data, setData] = useState(null)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    loadRestaurants().then(setData, (err) => setError(err.message))
+  }, [])
+
+  if (error) return <p className="status">Couldn't load restaurants: {error}</p>
+  if (!data) return <p className="status">Loading…</p>
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
+    <main>
+      <header>
+        <h1>{data.title}</h1>
+        <p className="source">{data.source}</p>
+      </header>
+
+      <section className="restaurants">
+        {data.restaurants.map((restaurant) => (
+          <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+        ))}
       </section>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
+      {data.checkedWithoutOysters.length > 0 && (
+        <section className="checked">
+          <h2>Checked, but no oysters on the delivery menu</h2>
           <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
+            {data.checkedWithoutOysters.map((r) => (
+              <li key={r.id}>
+                <a href={r.doordashUrl} target="_blank" rel="noreferrer">
+                  {r.name}
+                </a>
+                {r.street && ` · ${r.street}`}
+              </li>
+            ))}
           </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        </section>
+      )}
+    </main>
+  )
+}
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+function RestaurantCard({ restaurant: r }) {
+  const itemCount = r.menu.reduce((n, section) => n + section.items.length, 0)
+
+  return (
+    <article className="card">
+      <h2>{r.name}</h2>
+      <p className="meta">
+        {[r.street, r.neighborhood].filter(Boolean).join(' · ')}
+      </p>
+      <p className="meta">
+        {[r.rating != null && `★ ${r.rating} (${r.ratingCount})`, r.priceRange]
+          .filter(Boolean)
+          .join(' · ')}
+      </p>
+
+      <ul className="oysters">
+        {r.oysterItems.map((item) => (
+          <li key={item.name}>
+            <div className="item-line">
+              <span className="item-name">{item.name}</span>
+              <span className="price">{formatPrice(item.price)}</span>
+            </div>
+            {item.description && <p className="desc">{item.description}</p>}
+          </li>
+        ))}
+      </ul>
+
+      <details>
+        <summary>Full delivery menu ({itemCount} items)</summary>
+        {r.menu.map((section, i) => (
+          <div key={i} className="menu-section">
+            <h3>{section.section}</h3>
+            <ul>
+              {section.items.map((item, j) => (
+                <li key={j} className="item-line">
+                  <span className="item-name">{item.name}</span>
+                  <span className="price">{formatPrice(item.price)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </details>
+
+      <a className="dd-link" href={r.doordashUrl} target="_blank" rel="noreferrer">
+        View on DoorDash →
+      </a>
+    </article>
   )
 }
 

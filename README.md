@@ -1,16 +1,29 @@
-# React + Vite
+# GoodRiddance
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Manhattan restaurants with oysters on their DoorDash delivery menus.
 
-Currently, two official plugins are available:
+**Live:** https://good-riddance-894711667409.us-east4.run.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## How it fits together
 
-## React Compiler
+- `data/oyster-restaurants.json` — the dataset, scraped from public DoorDash store pages.
+- **Firestore** (`ruthai26nyc-2612`, `us-east4`) — where the data lives. `npm run seed`
+  loads the JSON into the `restaurants` collection and the `meta/oysterDataset` doc.
+- `server/index.js` — Express server on **Cloud Run** that serves the built React app and
+  `GET /api/restaurants` from Firestore.
+- `src/` — the React app, which reads `/api/restaurants`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Commands
 
-## Expanding the Oxlint configuration
+```bash
+npm run dev      # local app; /api is proxied to the deployed service
+npm run seed     # push data/oyster-restaurants.json to Firestore
+npm run deploy   # build and deploy to Cloud Run
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+`seed` and `deploy` use your active gcloud account, which needs access to
+`ruthai26nyc-2612`. To use a different signed-in account for one command:
+
+```bash
+CLOUDSDK_CORE_ACCOUNT=you@example.com npm run deploy
+```
