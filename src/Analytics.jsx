@@ -1,9 +1,11 @@
 import { useState } from 'react'
-import { carriers, dasherLbPerPickup, formatDate, lbPerShell, oysterItems, oystersPerShell, weeklyShells } from './shellData'
+import Icon from './Icon'
+import { carriers, dasherLbPerPickup, formatDate, lbPerShell, oysterItems, oystersPerShell, restaurant, upcomingPickups, weeklyShells } from './shellData'
 
 const compact = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 })
 
-export default function Analytics() {
+export default function Analytics({ schedule }) {
+  const [nextPickup] = upcomingPickups(schedule.days, 1)
   const totalLb = weeklyShells.reduce((sum, w) => sum + w.lb, 0)
   const pickups = weeklyShells.reduce((sum, w) => sum + w.pickups, 0)
   const dasherPickups = weeklyShells.reduce((sum, w) => sum + w.dasher, 0)
@@ -18,10 +20,14 @@ export default function Analytics() {
     <>
       <p className="sample-note">Sample data · last 12 full weeks</p>
       <div className="stats">
-        <Stat label="Shells recycled" value={`${totalLb.toLocaleString()} lb`} note={`About ${shells.toLocaleString()} shells`} />
-        <Stat label="Pickups completed" value={pickups} note={`${dasherPickups} by DoorDash Dashers`} />
-        <Stat label="Kept out of landfill" value={`${(totalLb / 2000).toFixed(1)} tons`} note="Weighed at BOP’s transfer station" />
-        <Stat label="Future oysters" value={oystersPerShell.map((n) => compact.format(shells * n)).join('–')} note={`At ${oystersPerShell.join('–')} per shell`} />
+        <Stat label="Shells a week" value={restaurant.oystersPerWeek.toLocaleString()}
+          note={`About ${Math.round(restaurant.oystersPerWeek * lbPerShell)} lb · estimated from your menu`} />
+        <Stat label="Shells recycled" value={`${totalLb.toLocaleString()} lb`}
+          note={`About ${shells.toLocaleString()} shells · ${(totalLb / 2000).toFixed(1)} tons kept out of landfill`} />
+        <Stat label="Pickups completed" value={pickups} href="#pickups"
+          note={`${dasherPickups} by Dashers${nextPickup ? ` · next ${formatDate(nextPickup)}` : ''}`} />
+        <Stat label="Future oysters" value={oystersPerShell.map((n) => compact.format(shells * n)).join('–')}
+          note={`At ${oystersPerShell.join('–')} per shell`} />
       </div>
 
       <section className="card">
@@ -60,13 +66,20 @@ export default function Analytics() {
   )
 }
 
-function Stat({ label, value, note }) {
-  return (
-    <div className="stat card">
+function Stat({ label, value, note, href }) {
+  const body = (
+    <>
       <span className="stat-label">{label}</span>
       <strong className="stat-value">{value}</strong>
       <span className="stat-note">{note}</span>
-    </div>
+    </>
+  )
+  if (!href) return <div className="stat card">{body}</div>
+  return (
+    <a className="stat card" href={href}>
+      {body}
+      <Icon name="arrow" size={16} className="stat-arrow" />
+    </a>
   )
 }
 
