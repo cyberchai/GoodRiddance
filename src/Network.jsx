@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import Icon from './Icon'
 import { askAgent } from './agent'
+import ContactRun, { useContactFinder } from './ContactRun'
 import { loadRestaurants } from './data'
 import { restaurant as home, shellTotals, weeklyShells } from './shellData'
 
@@ -44,6 +45,7 @@ export default function Network({ title, onToast }) {
   const [selectedId, setSelectedId] = useState(null)
   // Gemini-written invites by restaurant id: { status: 'writing' | 'ready' | 'failed', subject, body, error }
   const [invites, setInvites] = useState({})
+  const [contacts, findContact] = useContactFinder()
   useEffect(() => { loadRestaurants().then(setData, (err) => setError(err.message)) }, [])
 
   async function draftInvite(place) {
@@ -105,11 +107,14 @@ export default function Network({ title, onToast }) {
                 <p className="oyster-line">{p.oysterItems.map((o) => `${o.name} ${formatPrice(o.price)}`).join(' · ')}</p>
                 <div className="network-place-actions">
                   {!invites[p.id] && <button className="button primary small" onClick={() => draftInvite(p)}><Icon name="mail" size={15} /> Invite to recycle</button>}
+                  {!contacts[p.id] && <button className="button secondary small" onClick={() => findContact(p)}><Icon name="search" size={15} /> Find their email</button>}
                   <a className="text-link" href={p.doordashUrl} target="_blank" rel="noreferrer">DoorDash page <Icon name="arrow" size={13} /></a>
                 </div>
+                {contacts[p.id] && <ContactRun run={contacts[p.id]} onRetry={() => findContact(p)} />}
                 {invites[p.id] && (
                   <InviteDraft
                     invite={invites[p.id]}
+                    to={contacts[p.id]?.contact?.email}
                     onChange={(changes) => editInvite(p.id, changes)}
                     onCopy={() => copyInvite(p, invites[p.id])}
                     onRewrite={() => draftInvite(p)}
@@ -130,7 +135,8 @@ export default function Network({ title, onToast }) {
 }
 
 // An invite Gemini wrote for one restaurant, editable before it's copied or emailed.
-function InviteDraft({ invite, onChange, onCopy, onRewrite }) {
+// It's addressed to the email the contact agent found, unless the owner types another.
+function InviteDraft({ invite, to, onChange, onCopy, onRewrite }) {
   if (invite.status === 'writing') {
     return <p className="invite-draft invite-status" aria-live="polite"><span className="agent-pulse" /> Gemini is writing an invite from their DoorDash menu…</p>
   }
@@ -142,10 +148,12 @@ function InviteDraft({ invite, onChange, onCopy, onRewrite }) {
       </div>
     )
   }
-  const mailto = `mailto:?subject=${encodeURIComponent(invite.subject)}&body=${encodeURIComponent(invite.body)}`
+  const recipient = invite.to ?? to ?? ''
+  const mailto = `mailto:${encodeURIComponent(recipient)}?subject=${encodeURIComponent(invite.subject)}&body=${encodeURIComponent(invite.body)}`
   return (
     <form className="invite-draft" onSubmit={(e) => e.preventDefault()}>
       <p className="invite-status"><Icon name="sparkles" size={13} /> Written by Gemini from their DoorDash menu. Edit before sending.</p>
+      <label>To<input type="email" value={recipient} placeholder="Find their email, or type it" onChange={(e) => onChange({ to: e.target.value })} /></label>
       <label>Subject<input value={invite.subject} onChange={(e) => onChange({ subject: e.target.value })} /></label>
       <label>Message<textarea rows={9} value={invite.body} onChange={(e) => onChange({ body: e.target.value })} /></label>
       <div className="network-place-actions">

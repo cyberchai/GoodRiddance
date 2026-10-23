@@ -3,6 +3,7 @@ import express from 'express'
 import { Firestore } from '@google-cloud/firestore'
 import { GoogleGenAI } from '@google/genai'
 import { agents } from './agents.js'
+import { findContact } from './contactAgent.js'
 
 // On Cloud Run these authenticate as the service's runtime service account.
 const db = new Firestore()
@@ -69,6 +70,25 @@ app.post('/api/agent/:name', express.json({ limit: '64kb' }), async (req, res) =
     return res.status(502).json({ error: `Gemini returned no answer (${candidate?.finishReason ?? 'no candidates'}).` })
   }
   res.json({ model, content: candidate.content })
+})
+
+// Runs the contact agent (contactAgent.js) on one of our restaurants, streaming its
+// steps as JSON lines so the page can show it searching. Closing the page stops it.
+app.post('/api/find-contact/:id', async (req, res) => {
+  const restaurant = await db.collection('restaurants').doc(req.params.id).get()
+  if (!restaurant.exists) return res.status(404).json({ error: 'No restaurant with that id.' })
+  const controller = new AbortController()
+  res.on('close', () => controller.abort())
+  res.type('application/x-ndjson').set('Cache-Control', 'no-store')
+  const emit = (event) => res.write(`${JSON.stringify(event)}\n`)
+  try {
+    await findContact({ ai, model, restaurant: restaurant.data(), signal: controller.signal, emit })
+  } catch (err) {
+    if (controller.signal.aborted) return
+    console.error(err)
+    emit({ type: 'error', error: errorMessage(err) })
+  }
+  res.end()
 })
 
 // API errors as JSON, keeping the status of bad requests and of Gemini's own errors.
