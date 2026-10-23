@@ -74,7 +74,7 @@ export default function Network({ title, onInvite }) {
         ))}
         {data && (
           <p className="network-caveat">
-            <Icon name="help" size={15} /> Straight-line distance from {home.name}. Listed from public DoorDash menus; no restaurant has agreed to join yet.
+            <Icon name="help" size={15} /> Straight-line distance from {home.name}. Listed from public DoorDash menus.
           </p>
         )}
       </aside>
