@@ -1,8 +1,15 @@
 # GoodRiddance
 
-Manhattan restaurants with oysters on their DoorDash delivery menus.
+Good Riddance helps restaurants recycle or donate their kitchen waste, with pickups running
+on DoorDash Drive. This repo holds two clickable prototypes that share one app:
+
+| Side | Open it at | For |
+|---|---|---|
+| **Restaurant** | `/` | Restaurant owners: menu waste scan, recurring pickups, impact analytics, Manhattan oyster restaurants |
+| **Customer** | `/customer` | People ordering delivery: find restaurants that recycle, return oyster and clam shells, see their impact |
 
 **Live:** https://good-riddance-894711667409.us-east4.run.app
+(customer side: https://good-riddance-894711667409.us-east4.run.app/customer, once merged to `main`)
 
 ## How it fits together
 
@@ -14,19 +21,49 @@ Manhattan restaurants with oysters on their DoorDash delivery menus.
 - `src/` — the GoodRiddance restaurant workspace (menu, recurring pickup, analytics). Its
   Oysters page (`#oysters`) reads `/api/restaurants`.
 - `src/customer/` — the customer-side concept prototype at **`/customer`** (see below).
+- `src/main.jsx` — picks which side to load from the URL path.
 
-## Customer prototype (`/customer`)
+## Customer side (`/customer`)
 
-A clickable phone-sized concept of Good Riddance inside a delivery app's customer screens,
-built from `GOOD_RIDDANCE_CUSTOMER_SPEC.md`. Mock data only (`src/customer/customerData.js`):
-no backend, payments, maps or push notifications.
+A clickable, phone-sized concept of Good Riddance inside a delivery app's customer screens,
+built from `GOOD_RIDDANCE_CUSTOMER_SPEC.md`. On a computer it shows inside a phone frame;
+on a phone it fills the screen. Mock data only: no backend, payments, maps or push
+notifications.
 
 ```bash
 npm install
 npm run dev      # then open http://localhost:5173/customer
 ```
 
-Demo path: tap **Recycles waste** → open **Pearl & Pier** → tap the **Shell recycling partner**
+### Screens
+
+- **Home** — the usual delivery-app home (address, search, categories, filter chips), plus a
+  **Recycles waste** filter chip, an "Oyster season, shells included" banner and an
+  "NYC shell recyclers" row.
+- **Store page** — Pearl & Pier with a **Shell recycling partner** badge. Tapping it shows
+  the store's shell stats from pickup records.
+- **Menu item** — oyster and clam dishes explain that their shells are recycled; Rescue
+  Chowder shows a "Made with rescued ingredients" label.
+- **Checkout** — an opt-in **Return your shells (+$1.00)** toggle, shown only when the cart
+  has oysters or clams. Off by default.
+- **Delivered + receipt** — a "Shell bag included" card and an estimated impact line.
+- **Return flow** — a next-day reminder, then **Hand to my next driver** or **Drop off
+  nearby** (map and list of partner restaurants).
+- **Me → My impact** — bags returned, estimated pounds of shells, orders from stores that
+  recycle, milestones and history.
+
+### Files
+
+- `src/customer/CustomerApp.jsx` — all customer screens and the demo state.
+- `src/customer/customerData.js` — sample stores, menus, drop-off spots and impact history.
+  Shell weights are rough estimates and are labeled that way in the app.
+- `src/customer/customer.css` — styles. `cx-` classes are the core app; `gr-` classes are
+  the new Good Riddance parts.
+- `src/customer/Art.jsx`, `src/customer/CxIcon.jsx` — drawn food placeholders and icons.
+
+### Demo path
+
+Tap **Recycles waste** → open **Pearl & Pier** → tap the **Shell recycling partner**
 badge → add **East Coast Oysters, dozen** → **View cart** → turn on **Return your shells** →
 **Place order** → **Done** → **Prototype: skip to the next day** → tap the notification →
 pick a return option → **Simulate return** → see the totals in **Me → My impact**.
