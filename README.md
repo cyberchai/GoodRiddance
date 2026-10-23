@@ -1,12 +1,18 @@
 # GoodRiddance
 
-Good Riddance helps restaurants recycle or donate their kitchen waste, with pickups running
-on DoorDash Drive. This repo holds two clickable prototypes that share one app:
+Connects NYC restaurants to Billion Oyster Project: schedule shell pickups (a BOP truck or a
+DoorDash Dasher) to BOP's transfer station, keep donation receipts, and approve grant
+applications that a Gemini agent drafts for programs the restaurant is eligible for. The
+restaurant, pickups and agent are mocks; the NYC network list is real DoorDash data.
+
+This repo holds two clickable prototypes that share one app:
 
 | Side | Open it at | For |
 |---|---|---|
-| **Restaurant** | `/` | Restaurant owners: menu waste scan, recurring pickups, impact analytics, Manhattan oyster restaurants |
+| **Restaurant** | `/` | Restaurant owners: shell pickups, donation receipts, grant applications, NYC network |
 | **Customer** | `/customer` | People ordering delivery: find restaurants that recycle, return oyster and clam shells, see their impact |
+
+A **Restaurant view | Customer view** switch in the bottom-right corner jumps between them.
 
 **Live:** https://good-riddance-894711667409.us-east4.run.app
 (customer side: https://good-riddance-894711667409.us-east4.run.app/customer, once merged to `main`)
@@ -18,8 +24,9 @@ on DoorDash Drive. This repo holds two clickable prototypes that share one app:
   loads the JSON into the `restaurants` collection and the `meta/oysterDataset` doc.
 - `server/index.js` — Express server on **Cloud Run** that serves the built React app and
   `GET /api/restaurants` from Firestore.
-- `src/` — the GoodRiddance restaurant workspace (menu, recurring pickup, analytics). Its
-  Oysters page (`#oysters`) reads `/api/restaurants`.
+- `src/` — the merchant portal: Overview, Pickups, Grants and NYC network pages. Mock data
+  lives in `src/shellData.js` (restaurant, pickups, BOP facts) and `src/grantPrograms.js`
+  (grant programs and the location-based eligibility check). NYC network reads `/api/restaurants`.
 - `src/customer/` — the customer-side concept prototype at **`/customer`** (see below).
 - `src/main.jsx` — picks which side to load from the URL path.
 - `src/ViewSwitch.jsx` — the floating "Restaurant view | Customer view" pill for jumping between the two sides in a demo.
