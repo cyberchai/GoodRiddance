@@ -1,6 +1,6 @@
 {
   "title": "Manhattan restaurants with oysters on DoorDash",
-  "source": "DoorDash via dd-cli, fetched 2026-10-23",
+  "source": "DoorDash store menus, checked 2026-10-23",
   "mock": false,
   "restaurants": [
     {
@@ -20,6 +20,210 @@
           "description": "Hollandaise sauce, parmesan cheese.",
           "price": 24.95,
           "section": "Appetizers"
+        }
+      ]
+    },
+    {
+      "id": "crave-fishbar-1837929",
+      "name": "Crave Fishbar",
+      "street": "428 Amsterdam Avenue",
+      "neighborhood": "Upper West Side",
+      "lat": 40.784233,
+      "lng": -73.97769,
+      "rating": 4.6,
+      "ratingCount": "50",
+      "doordashUrl": "https://www.doordash.com/store/crave-fishbar-new-york-1837929/112471546/",
+      "fetchedAt": "2026-10-23T16:41:49.695Z",
+      "oysterItems": [
+        {
+          "name": "East Coast Oyster",
+          "description": "half dozen freshly shucked east coast served with lemon, packed over ice (gf)",
+          "price": 19,
+          "section": "Most Ordered"
+        }
+      ]
+    },
+    {
+      "id": "crave-fishbar-37494",
+      "name": "Crave Fishbar",
+      "street": "945 2nd Avenue",
+      "neighborhood": "Midtown East",
+      "lat": 40.7551316,
+      "lng": -73.968682,
+      "rating": 4.8,
+      "ratingCount": "200+",
+      "doordashUrl": "https://www.doordash.com/store/crave-fishbar-new-york-37494/111996358/",
+      "fetchedAt": "2026-10-23T16:43:20.497Z",
+      "oysterItems": [
+        {
+          "name": "#E. Coast Oysters (6)",
+          "description": "Freshly shucked East Coast oysters served on the half shell, typically accompanied by cocktail sauce and a hint of lemon.",
+          "price": 19,
+          "section": "RAW BAR"
+        }
+      ]
+    },
+    {
+      "id": "docks",
+      "name": "Docks Oyster Bar and Seafood Grill",
+      "street": "633 3rd Ave",
+      "neighborhood": "Midtown East",
+      "lat": 40.74971799273044,
+      "lng": -73.97519001737237,
+      "rating": 4.7,
+      "ratingCount": "50",
+      "doordashUrl": "https://www.doordash.com/store/docks-oyster-bar-and-seafood-grill-new-york-37831329/85862754/",
+      "fetchedAt": "2026-10-23T16:41:15.355Z",
+      "oysterItems": [
+        {
+          "name": "Smoked Oysters Rockefeller",
+          "description": "spinach, parmesan, bread crumbs",
+          "price": 25,
+          "section": "Shareables"
+        }
+      ]
+    },
+    {
+      "id": "46539901",
+      "name": "Conway Diner (2nd Ave)",
+      "street": "80 2nd Ave",
+      "neighborhood": null,
+      "lat": 40.726395,
+      "lng": -73.9889204,
+      "rating": null,
+      "ratingCount": null,
+      "doordashUrl": "https://www.doordash.com/store/46539901/",
+      "fetchedAt": "2026-10-23T17:40:00Z",
+      "oysterItems": [
+        {
+          "name": "Fried Oysters",
+          "description": "Tartar Sauce",
+          "price": 18.0,
+          "section": "Appetizers"
+        },
+        {
+          "name": "Fresh Oysters(Fat Bastard)",
+          "description": "Plump oysters topped with vibrant red and yellow roe, garnished with fresh microgreens, served with lime wedges.",
+          "price": 5.98,
+          "section": "Chef Special"
+        }
+      ]
+    },
+    {
+      "id": "30380",
+      "name": "Lure Fishbar",
+      "street": "142 Mercer St",
+      "neighborhood": null,
+      "lat": 40.7246694,
+      "lng": -73.9983531,
+      "rating": 4.5,
+      "ratingCount": "624",
+      "doordashUrl": "https://www.doordash.com/store/30380/",
+      "fetchedAt": "2026-10-23T17:40:00Z",
+      "oysterItems": [
+        {
+          "name": "Kumamoto Oyster Sushi",
+          "description": "",
+          "price": 4.75,
+          "section": "Sushi & Sashimi"
+        },
+        {
+          "name": "Kumamoto Oyster Sashimi",
+          "description": "",
+          "price": 4.75,
+          "section": "Sushi & Sashimi"
+        },
+        {
+          "name": "Deviled Eggs w/ Crispy Oysters",
+          "description": "Topped with Crispy Oysters and Pickled Chili",
+          "price": 19.0,
+          "section": "Appetizers"
+        }
+      ]
+    },
+    {
+      "id": "951624",
+      "name": "Lex Restaurant",
+      "street": "1370 Lexington Ave",
+      "neighborhood": null,
+      "lat": 40.7825321,
+      "lng": -73.953691,
+      "rating": 4.7,
+      "ratingCount": "23",
+      "doordashUrl": "https://www.doordash.com/store/951624/",
+      "fetchedAt": "2026-10-23T17:40:00Z",
+      "oysterItems": [
+        {
+          "name": "Oysters SP",
+          "description": "",
+          "price": 29.95,
+          "section": "Specials"
+        }
+      ]
+    },
+    {
+      "id": "1255592",
+      "name": "The Sea Fire Grill",
+      "street": "158 E 48th St",
+      "neighborhood": null,
+      "lat": 40.7547837,
+      "lng": -73.9724083,
+      "rating": 4.5,
+      "ratingCount": "87",
+      "doordashUrl": "https://www.doordash.com/store/1255592/",
+      "fetchedAt": "2026-10-23T17:40:00Z",
+      "oysterItems": [
+        {
+          "name": "Oysters Rockefeller",
+          "description": "½ dozen, spinach, parmesan, and pernod.",
+          "price": 29.0,
+          "section": "Appetizer"
+        }
+      ]
+    },
+    {
+      "id": "996780",
+      "name": "SEA & SEA FISH MARKET",
+      "street": "310 Saint Nicholas Ave",
+      "neighborhood": null,
+      "lat": 40.8109778,
+      "lng": -73.9522114,
+      "rating": 4.2,
+      "ratingCount": "1836",
+      "doordashUrl": "https://www.doordash.com/store/996780/",
+      "fetchedAt": "2026-10-23T17:40:00Z",
+      "oysterItems": [
+        {
+          "name": "Fried Oyster 10pcs",
+          "description": "Ten pieces of oysters, lightly breaded and fried, typically served with tartar sauce.",
+          "price": 12.75,
+          "section": "Fried Seafood Special"
+        }
+      ]
+    },
+    {
+      "id": "2183181",
+      "name": "Crab Du Jour",
+      "street": "284 Malcolm X Blvd",
+      "neighborhood": null,
+      "lat": 40.807146,
+      "lng": -73.9455132,
+      "rating": 4.5,
+      "ratingCount": "2529",
+      "doordashUrl": "https://www.doordash.com/store/2183181/",
+      "fetchedAt": "2026-10-23T17:40:00Z",
+      "oysterItems": [
+        {
+          "name": "Fried Oyster Po'Boy",
+          "description": "Louisiana style sandwiches served with toasted hero bread, lettuce, tomatoes, garlic spread, and remoulade sauce or chef's choice.",
+          "price": 18.0,
+          "section": "Po' Boy & Rolls"
+        },
+        {
+          "name": "Fried Oyster Basket (10)",
+          "description": "Crispy, fresh oysters deep fried and seasoned. served with fries of choice",
+          "price": 18.0,
+          "section": "Baskets"
         }
       ]
     }

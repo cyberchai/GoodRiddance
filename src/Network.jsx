@@ -85,6 +85,7 @@ export default function Network({ title, onToast }) {
         <div className="map-panel-head">
           <h1>{title}</h1>
           <p className="muted">{status}</p>
+          <p className="map-panel-purpose">These restaurants serve oysters. Invite them to recycle their shells with Billion Oyster Project, so more shells go back into New York Harbor.</p>
         </div>
         {places.map((p) => (
           <div key={p.id} className={`network-place ${p.id === selected?.id ? 'selected' : ''}`}>
