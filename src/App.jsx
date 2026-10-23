@@ -6,7 +6,8 @@ import GoodRiddance from './GoodRiddance'
 import Grants from './Grants'
 import Network from './Network'
 import ProfileMenu from './ProfileMenu'
-import { opportunities } from './opportunities'
+import { useGrantDrafts } from './grantAgent'
+import { isEligible, opportunities } from './opportunities'
 import { bop, readSchedule, restaurant, writeSchedule } from './shellData'
 import './App.css'
 
@@ -21,19 +22,22 @@ const pages = {
   },
   grants: {
     label: 'Grants', icon: 'receipt', title: 'Grants & press',
-    blurb: 'An agent applies to grants and press you qualify for, using your shell data. You approve each one.',
+    blurb: 'A Gemini agent drafts applications for the grants and press you qualify for, using your shell data. You approve each one.',
   },
   network: {
     label: 'NYC network', icon: 'pin', title: 'Oyster restaurants in NYC',
     blurb: `Restaurants serving oysters on DoorDash that could recycle their shells with ${bop.name}.`,
   },
-  // Opened from the GoodRiddance connection at the bottom of the sidebar, not the main nav.
+  // The "Connected via GoodRiddance" entry in the sidebar.
   goodriddance: {
     label: 'GoodRiddance', title: 'GoodRiddance',
     blurb: `How much oyster shell ${restaurant.name} has sent to ${bop.name}.`,
   },
 }
 const defaultPage = 'menu'
+// Sidebar groups: DoorDash's own pages, then the pages GoodRiddance runs, nested under its connection.
+const doordashPages = ['menu']
+const goodriddancePages = ['pickups', 'grants', 'network']
 const aliases = { oysters: 'network', overview: 'goodriddance', analytics: 'goodriddance' }
 
 function pageFromHash() {
@@ -56,6 +60,8 @@ export default function App() {
   const [decisions, setDecisions] = useState({})
   const [toast, setToast] = useState('')
   const [connected, setConnected] = useState(true)
+  const grantAgent = useGrantDrafts()
+  const { draftAll } = grantAgent
 
   useEffect(() => {
     const sync = () => { setPage(pageFromHash()); window.scrollTo({ top: 0 }) }
@@ -67,6 +73,10 @@ export default function App() {
     const timer = setTimeout(() => setToast(''), 4000)
     return () => clearTimeout(timer)
   }, [toast])
+  // The agent starts on everything the restaurant is eligible for once the owner opens Grants.
+  useEffect(() => {
+    if (page === 'grants') draftAll(opportunities.filter((o) => o.status === 'ready' && !decisions[o.id] && isEligible(o)))
+  }, [page, decisions, draftAll])
 
   function saveSchedule(next) {
     setSchedule(next)
@@ -77,18 +87,26 @@ export default function App() {
   }
   function decide(opportunity, decision) {
     setDecisions({ ...decisions, [opportunity.id]: decision })
+    if (decision === 'declined') grantAgent.stop(opportunity.id)
     if (decision === 'approved') setToast(`Approved. ${opportunity.name} is marked as submitted. Nothing was sent (mock).`)
   }
   function toggleConnection() {
     setConnected(!connected)
     setToast(connected ? 'Disconnected from GoodRiddance (mock).' : 'Connected to GoodRiddance (mock).')
   }
-  function invite(name) {
-    setToast(`Invite to ${name} drafted. Nothing was sent (mock).`)
+  function navLink(id) {
+    return (
+      <a key={id} href={`#${id}`} className={`nav-item ${page === id ? 'active' : ''}`} aria-current={page === id ? 'page' : undefined}>
+        <Icon name={pages[id].icon} size={18} />
+        {pages[id].label}
+        {id === 'grants' && pendingGrants > 0 && <span className="nav-count" aria-label={`${pendingGrants} awaiting approval`}>{pendingGrants}</span>}
+      </a>
+    )
   }
 
   const pendingGrants = opportunities.filter((o) => o.status === 'ready' && !decisions[o.id]).length
   const current = pages[page]
+  const isGoodriddancePage = goodriddancePages.includes(page)
   // NYC network is a full-page map, with no heading or footer around it.
   const fullBleed = page === 'network'
 
@@ -99,21 +117,14 @@ export default function App() {
           <img src="/brand/doordash-logo.jpg" alt="" className="brand-logo" />
           <span>DOORDASH<small>Merchant Portal</small></span>
         </a>
-        <nav aria-label="Merchant Portal">
-          {Object.entries(pages).filter(([id]) => id !== 'goodriddance').map(([id, p]) => (
-            <a key={id} href={`#${id}`} className={`nav-item ${page === id ? 'active' : ''}`} aria-current={page === id ? 'page' : undefined}>
-              <Icon name={p.icon} size={18} />
-              {p.label}
-              {id === 'grants' && pendingGrants > 0 && <span className="nav-count" aria-label={`${pendingGrants} awaiting approval`}>{pendingGrants}</span>}
-            </a>
-          ))}
-        </nav>
+        <nav aria-label="Merchant Portal">{doordashPages.map(navLink)}</nav>
         <div className="integration">
           <a href="#goodriddance" className={`nav-item ${page === 'goodriddance' ? 'active' : ''}`} aria-current={page === 'goodriddance' ? 'page' : undefined}>
             <img src="/brand/goodriddance-logo.png" alt="" className="integration-logo" />
             <span><strong>{connected ? 'Connected via GoodRiddance' : 'GoodRiddance'}</strong>{!connected && <small>Not connected</small>}</span>
             <span className={`status-dot ${connected ? '' : 'off'}`} />
           </a>
+          <nav className="subnav" aria-label="GoodRiddance">{goodriddancePages.map(navLink)}</nav>
         </div>
         <div className="sidebar-links">
           <button onClick={() => setToast(profileMessages.settings)}><Icon name="settings" size={16} /> Settings</button>
@@ -123,7 +134,11 @@ export default function App() {
 
       <div className="main-shell">
         <header className="topbar">
-          <div className="crumbs">Merchant Portal <Icon name="chevron" size={13} /><strong>{current.label}</strong></div>
+          <div className="crumbs">
+            Merchant Portal <Icon name="chevron" size={13} />
+            {isGoodriddancePage && <>GoodRiddance <Icon name="chevron" size={13} /></>}
+            <strong>{current.label}</strong>
+          </div>
           <div className="topbar-right">
             <ProfileMenu onAction={(action) => setToast(profileMessages[action])} />
           </div>
@@ -137,8 +152,8 @@ export default function App() {
           </div>}
           {page === 'menu' && <Menu soldOut={soldOut} onToggle={toggleStock} />}
           {page === 'pickups' && <Pickups schedule={schedule} onSave={saveSchedule} />}
-          {page === 'grants' && <Grants decisions={decisions} onDecide={decide} />}
-          {page === 'network' && <Network title={current.title} onInvite={invite} />}
+          {page === 'grants' && <Grants decisions={decisions} onDecide={decide} agent={grantAgent} />}
+          {page === 'network' && <Network title={current.title} onToast={setToast} />}
           {page === 'goodriddance' && <GoodRiddance connected={connected} onToggle={toggleConnection} schedule={schedule} />}
         </main>
 

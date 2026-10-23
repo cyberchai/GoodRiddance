@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Icon from './Icon'
-import { carriers, dasherLbPerPickup, formatDate, lbPerShell, oysterItems, oystersPerShell, restaurant, upcomingPickups, weeklyShells } from './shellData'
+import { carriers, formatDate, oysterItems, oystersPerShell, restaurant, shellTotals, upcomingPickups, weeklyShells } from './shellData'
 
 const ranges = [{ weeks: 4, label: 'Last 4 weeks' }, { weeks: 12, label: 'Last 12 weeks' }]
 const lbPerTrashBag = 30 // roughly one full kitchen trash bag
@@ -9,7 +9,7 @@ function formatCount(n) {
   return Math.round(n).toLocaleString()
 }
 
-function prefersReducedMotion() {
+export function prefersReducedMotion() {
   return typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 }
 
@@ -46,11 +46,7 @@ export default function Analytics({ schedule }) {
   const rangeLabel = ranges.find((r) => r.weeks === range).label.toLowerCase()
   const [nextPickup] = upcomingPickups(schedule.days, 1)
 
-  const totalLb = weeks.reduce((sum, w) => sum + w.lb, 0)
-  const pickups = weeks.reduce((sum, w) => sum + w.pickups, 0)
-  const dasherPickups = weeks.reduce((sum, w) => sum + w.dasher, 0)
-  const shells = Math.round(totalLb / lbPerShell)
-  const dasherLb = dasherPickups * dasherLbPerPickup
+  const { lb: totalLb, pickups, dasherPickups, dasherLb, shells, oysterHomes } = shellTotals(weeks)
   const byCarrier = [
     { id: 'bop', pickups: pickups - dasherPickups, lb: totalLb - dasherLb },
     { id: 'dasher', pickups: dasherPickups, lb: dasherLb },
@@ -72,7 +68,7 @@ export default function Analytics({ schedule }) {
           note={`About ${shells.toLocaleString()} shells`} />
         <Stat label="Kept out of the landfill" value={totalLb / lbPerTrashBag} format={(n) => `${formatCount(n)} trash bags`}
           note={`About ${(totalLb / 2000).toFixed(1)} tons, at ~${lbPerTrashBag} lb per full bag`} />
-        <Stat label="New homes for baby oysters" value={shells * oystersPerShell[0]} format={(n) => `${formatCount(n)}+`}
+        <Stat label="New homes for baby oysters" value={oysterHomes} format={(n) => `${formatCount(n)}+`}
           note={`Your used shells go back into New York Harbor. Baby oysters attach to them and grow, ${oystersPerShell.join('–')} per shell.`} />
         <Stat label="Pickups completed" value={pickups} format={formatCount} href="#pickups"
           note={`${dasherPickups} by Dashers${nextPickup ? ` · next ${formatDate(nextPickup)}` : ''}`} />

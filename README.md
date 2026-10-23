@@ -3,7 +3,8 @@
 Connects NYC restaurants to Billion Oyster Project: schedule shell pickups (a BOP truck or a
 DoorDash Dasher) to BOP's transfer station, keep donation receipts, and approve grant
 applications that a Gemini agent drafts for programs the restaurant is eligible for. The
-restaurant, pickups and agent are mocks; the NYC network list is real DoorDash data.
+restaurant and pickups are mocks; the NYC network list is real DoorDash data, and the
+Gemini agents are live.
 
 This repo holds two clickable prototypes that share one app:
 
@@ -26,14 +27,37 @@ A **Restaurant view | Customer view** switch in the bottom-right corner jumps be
   `data/mock-restaurants.json` when there is none and the NYC network page says "Mock data".
 - **Firestore** (`ruthai26nyc-2612`, `us-east4`) — where the data lives. `npm run seed`
   loads the JSON into the `restaurants` collection and the `meta/oysterDataset` doc.
-- `server/index.js` — Express server on **Cloud Run** that serves the built React app and
-  `GET /api/restaurants` from Firestore.
-- `src/` — the merchant portal: Overview, Pickups, Grants and NYC network pages. Mock data
-  lives in `src/shellData.js` (restaurant, pickups, BOP facts) and `src/grantPrograms.js`
-  (grant programs and the location-based eligibility check). NYC network reads `/api/restaurants`.
+- `server/index.js` — Express server on **Cloud Run** that serves the built React app,
+  `GET /api/restaurants` from Firestore, and `POST /api/agent/:name`, one Gemini turn for an
+  agent defined in `server/agents.js`.
+- `src/` — the merchant portal: Menu, Pickups, Grants, NYC network and GoodRiddance pages. Mock
+  data lives in `src/shellData.js` (restaurant, pickups, BOP facts) and `src/opportunities.js`
+  (grants and press, their application forms and sample eligibility rules). NYC network reads
+  `/api/restaurants`.
 - `src/customer/` — the customer-side concept prototype at **`/customer`** (see below).
 - `src/main.jsx` — picks which side to load from the URL path.
 - `src/ViewSwitch.jsx` — the floating "Restaurant view | Customer view" pill for jumping between the two sides in a demo.
+
+## Gemini agents
+
+- **Grants** (`apply`): when the owner opens Grants, an agent starts on each application the
+  restaurant is eligible for. It reads the form and the restaurant's shell data through tools,
+  fills every field with a cited source, and hands the draft over for approval. Its steps
+  play out on the page. If a live run fails, the owner can play a recorded real run instead,
+  labelled as recorded (`src/agentRecordings.js`).
+- **NYC network** (`invite`): "Invite to recycle" writes an email to that restaurant from its
+  DoorDash menu and Harbor & Hearth's results.
+
+The server calls Gemini on Vertex AI as Cloud Run's service account, so no API key is needed.
+The model is `gemini-3.8-flash` unless `GEMINI_MODEL` is set. The server holds each agent's
+prompt, tools and limits; the browser runs the tools (`src/agent.js`, `src/grantAgent.js`).
+The agent API isn't on the deployed service until you deploy, so to try a change locally run
+the server yourself (it uses your gcloud application-default login):
+
+```bash
+GOOGLE_CLOUD_PROJECT=ruthai26nyc-2612 npm start   # API on :8080
+API_PROXY_TARGET=http://localhost:8080 npm run dev # app, using that API
+```
 
 ## Customer side (`/customer`)
 
