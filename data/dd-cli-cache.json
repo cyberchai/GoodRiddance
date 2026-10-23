@@ -1,0 +1,85 @@
+{
+  "title": "Manhattan restaurants with oysters on DoorDash",
+  "source": "DoorDash via dd-cli, fetched 2026-10-23",
+  "mock": false,
+  "restaurants": [
+    {
+      "id": "24863851",
+      "name": "Benny John's Bar and Grill",
+      "street": "8 E 48th St",
+      "neighborhood": null,
+      "lat": 40.7568723,
+      "lng": -73.9774352,
+      "rating": 4.1,
+      "ratingCount": 7,
+      "doordashUrl": "https://www.doordash.com/store/24863851/",
+      "fetchedAt": "2026-10-23T18:39:00.838Z",
+      "oysterItems": [
+        {
+          "name": "Oysters Rockefeller",
+          "description": "Hollandaise sauce, parmesan cheese.",
+          "price": 24.95,
+          "section": "Appetizers"
+        }
+      ]
+    },
+    {
+      "id": "24417508",
+      "name": "Pesce Lulu Seafood Kitchen",
+      "street": "601 Lexington Ave",
+      "neighborhood": null,
+      "lat": 40.7583358,
+      "lng": -73.9699153,
+      "rating": 4.6,
+      "ratingCount": 44,
+      "doordashUrl": "https://www.doordash.com/store/24417508/",
+      "fetchedAt": "2026-10-23T18:39:03.471Z",
+      "oysterItems": [
+        {
+          "name": "fisherman’s soup (contains fish)",
+          "description": "classic manhattan style tomato base chowder : caramelized onions : carrots : celery : san marazano tomatoes : spices : mahi mahi : salmon : cod : herbs + spices + oyster crackers.",
+          "price": 7.15,
+          "section": "Vegetarian Sides"
+        }
+      ]
+    }
+  ],
+  "checkedWithoutOysters": [
+    {
+      "id": "26016857",
+      "name": "MariNe Handroll",
+      "street": null,
+      "doordashUrl": "https://www.doordash.com/store/26016857/"
+    },
+    {
+      "id": "24044493",
+      "name": "Sicily Osteria",
+      "street": null,
+      "doordashUrl": "https://www.doordash.com/store/24044493/"
+    },
+    {
+      "id": "29873933",
+      "name": "Luke's Lobster",
+      "street": null,
+      "doordashUrl": "https://www.doordash.com/store/29873933/"
+    },
+    {
+      "id": "40303467",
+      "name": "Limani",
+      "street": null,
+      "doordashUrl": "https://www.doordash.com/store/40303467/"
+    },
+    {
+      "id": "29189025",
+      "name": "Shaking Crab",
+      "street": null,
+      "doordashUrl": "https://www.doordash.com/store/29189025/"
+    },
+    {
+      "id": "1721744",
+      "name": "Sushi 35 West",
+      "street": null,
+      "doordashUrl": "https://www.doordash.com/store/1721744/"
+    }
+  ]
+}

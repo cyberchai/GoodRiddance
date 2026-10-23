@@ -6,7 +6,7 @@ import Analytics from './Analytics'
 import Grants from './Grants'
 import Network from './Network'
 import ProfileMenu from './ProfileMenu'
-import { assess, programs } from './grantPrograms'
+import { opportunities } from './opportunities'
 import { bop, readSchedule, restaurant, writeSchedule } from './shellData'
 import './App.css'
 
@@ -24,8 +24,8 @@ const pages = {
     blurb: `How much oyster shell ${restaurant.name} has sent to ${bop.name}.`,
   },
   grants: {
-    label: 'Grants', icon: 'receipt', title: 'Grants & incentives',
-    blurb: 'The Gemini agent finds programs you’re eligible for, fills in the application, and waits for your approval.',
+    label: 'Grants', icon: 'receipt', title: 'Grants & press',
+    blurb: 'An agent applies to grants and press you qualify for, using your shell data. You approve each one.',
   },
   network: {
     label: 'NYC network', icon: 'pin', title: 'Oyster restaurants in NYC',
@@ -44,6 +44,8 @@ function pageFromHash() {
 const profileMessages = {
   switch: `${restaurant.name} is the only store in this prototype.`,
   signout: 'Signing out is turned off in this prototype.',
+  settings: 'Settings aren’t part of this prototype.',
+  help: 'Help isn’t part of this prototype.',
 }
 
 export default function App() {
@@ -71,15 +73,15 @@ export default function App() {
   function toggleStock(id) {
     setSoldOut(soldOut.includes(id) ? soldOut.filter((x) => x !== id) : [...soldOut, id])
   }
-  function decide(program, decision) {
-    setDecisions({ ...decisions, [program.id]: decision })
-    if (decision === 'approved') setToast(`Approved. The ${program.name} application is queued. Nothing was sent (mock).`)
+  function decide(opportunity, decision) {
+    setDecisions({ ...decisions, [opportunity.id]: decision })
+    if (decision === 'approved') setToast(`Approved. ${opportunity.name} is marked as submitted. Nothing was sent (mock).`)
   }
   function invite(name) {
     setToast(`Invite to ${name} drafted. Nothing was sent (mock).`)
   }
 
-  const pendingGrants = programs.filter((p) => assess(p, restaurant).eligible && !decisions[p.id]).length
+  const pendingGrants = opportunities.filter((o) => o.status === 'ready' && !decisions[o.id]).length
   const current = pages[page]
 
   return (
@@ -102,6 +104,10 @@ export default function App() {
           <Icon name="leaf" size={16} />
           <span><strong>Connected via GoodRiddance</strong></span>
           <span className="status-dot" />
+        </div>
+        <div className="sidebar-links">
+          <button onClick={() => setToast(profileMessages.settings)}><Icon name="settings" size={16} /> Settings</button>
+          <button onClick={() => setToast(profileMessages.help)}><Icon name="help" size={16} /> Help</button>
         </div>
       </aside>
 

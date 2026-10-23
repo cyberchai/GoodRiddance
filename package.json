@@ -9,13 +9,13 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "start": "node server/index.js",
+    "refresh": "node scripts/refresh-restaurants.js",
     "seed": "node scripts/seed-firestore.js",
     "deploy": "gcloud run deploy good-riddance --source . --region us-east4 --project ruthai26nyc-2612 --allow-unauthenticated"
   },
   "dependencies": {
     "@google-cloud/firestore": "^9.4.0",
     "express": "^5.3.0",
-    "leaflet": "^1.9.4",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },
