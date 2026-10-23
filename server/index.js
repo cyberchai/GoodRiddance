@@ -22,6 +22,8 @@ app.get('/api/restaurants', async (req, res) => {
 })
 
 app.use(express.static(join(import.meta.dirname, '../dist')))
+// The customer prototype is a client-side route served by the same index.html.
+app.get('/customer', (req, res) => res.sendFile(join(import.meta.dirname, '../dist/index.html')))
 
 const port = process.env.PORT ?? 8080
 app.listen(port, () => console.log(`Listening on :${port}`))

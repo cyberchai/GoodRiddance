@@ -13,6 +13,26 @@ Manhattan restaurants with oysters on their DoorDash delivery menus.
   `GET /api/restaurants` from Firestore.
 - `src/` — the GoodRiddance restaurant workspace (menu, recurring pickup, analytics). Its
   Oysters page (`#oysters`) reads `/api/restaurants`.
+- `src/customer/` — the customer-side concept prototype at **`/customer`** (see below).
+
+## Customer prototype (`/customer`)
+
+A clickable phone-sized concept of Good Riddance inside a delivery app's customer screens,
+built from `GOOD_RIDDANCE_CUSTOMER_SPEC.md`. Mock data only (`src/customer/customerData.js`):
+no backend, payments, maps or push notifications.
+
+```bash
+npm install
+npm run dev      # then open http://localhost:5173/customer
+```
+
+Demo path: tap **Recycles waste** → open **Pearl & Pier** → tap the **Shell recycling partner**
+badge → add **East Coast Oysters, dozen** → **View cart** → turn on **Return your shells** →
+**Place order** → **Done** → **Prototype: skip to the next day** → tap the notification →
+pick a return option → **Simulate return** → see the totals in **Me → My impact**.
+"Reset demo data" at the bottom of the Me tab starts over.
+
+Teal (`#1C6C74`) marks every Good Riddance element; the rest of the UI is the core app.
 
 ## Commands
 
