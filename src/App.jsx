@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import Icon from './Icon'
 import Menu from './Menu'
 import Pickups from './Pickups'
-import Analytics from './Analytics'
+import GoodRiddance from './GoodRiddance'
 import Grants from './Grants'
 import Network from './Network'
 import ProfileMenu from './ProfileMenu'
-import { assess, programs } from './grantPrograms'
+import { opportunities } from './opportunities'
 import { bop, readSchedule, restaurant, writeSchedule } from './shellData'
 import './App.css'
 
@@ -19,21 +19,22 @@ const pages = {
     label: 'Pickups', icon: 'truck', title: 'Shell pickups',
     blurb: 'Set a recurring pickup. A BOP truck or a DoorDash Dasher takes your shells to BOP’s transfer station.',
   },
-  analytics: {
-    label: 'Analytics', icon: 'chart', title: 'Your shell impact',
-    blurb: `How much oyster shell ${restaurant.name} has sent to ${bop.name}.`,
-  },
   grants: {
-    label: 'Grants', icon: 'receipt', title: 'Grants & incentives',
-    blurb: 'The Gemini agent finds programs you’re eligible for, fills in the application, and waits for your approval.',
+    label: 'Grants', icon: 'receipt', title: 'Grants & press',
+    blurb: 'An agent applies to grants and press you qualify for, using your shell data. You approve each one.',
   },
   network: {
     label: 'NYC network', icon: 'pin', title: 'Oyster restaurants in NYC',
     blurb: `Restaurants serving oysters on DoorDash that could recycle their shells with ${bop.name}.`,
   },
+  // Opened from the GoodRiddance connection at the bottom of the sidebar, not the main nav.
+  goodriddance: {
+    label: 'GoodRiddance', title: 'GoodRiddance',
+    blurb: `How much oyster shell ${restaurant.name} has sent to ${bop.name}.`,
+  },
 }
 const defaultPage = 'menu'
-const aliases = { oysters: 'network', overview: 'analytics' }
+const aliases = { oysters: 'network', overview: 'goodriddance', analytics: 'goodriddance' }
 
 function pageFromHash() {
   const id = location.hash.slice(1)
@@ -44,6 +45,8 @@ function pageFromHash() {
 const profileMessages = {
   switch: `${restaurant.name} is the only store in this prototype.`,
   signout: 'Signing out is turned off in this prototype.',
+  settings: 'Settings aren’t part of this prototype.',
+  help: 'Help isn’t part of this prototype.',
 }
 
 export default function App() {
@@ -52,6 +55,7 @@ export default function App() {
   const [soldOut, setSoldOut] = useState([])
   const [decisions, setDecisions] = useState({})
   const [toast, setToast] = useState('')
+  const [connected, setConnected] = useState(true)
 
   useEffect(() => {
     const sync = () => { setPage(pageFromHash()); window.scrollTo({ top: 0 }) }
@@ -71,15 +75,19 @@ export default function App() {
   function toggleStock(id) {
     setSoldOut(soldOut.includes(id) ? soldOut.filter((x) => x !== id) : [...soldOut, id])
   }
-  function decide(program, decision) {
-    setDecisions({ ...decisions, [program.id]: decision })
-    if (decision === 'approved') setToast(`Approved. The ${program.name} application is queued. Nothing was sent (mock).`)
+  function decide(opportunity, decision) {
+    setDecisions({ ...decisions, [opportunity.id]: decision })
+    if (decision === 'approved') setToast(`Approved. ${opportunity.name} is marked as submitted. Nothing was sent (mock).`)
+  }
+  function toggleConnection() {
+    setConnected(!connected)
+    setToast(connected ? 'Disconnected from GoodRiddance (mock).' : 'Connected to GoodRiddance (mock).')
   }
   function invite(name) {
     setToast(`Invite to ${name} drafted. Nothing was sent (mock).`)
   }
 
-  const pendingGrants = programs.filter((p) => assess(p, restaurant).eligible && !decisions[p.id]).length
+  const pendingGrants = opportunities.filter((o) => o.status === 'ready' && !decisions[o.id]).length
   const current = pages[page]
 
   return (
@@ -90,7 +98,7 @@ export default function App() {
           <span>DOORDASH<small>Merchant Portal</small></span>
         </a>
         <nav aria-label="Merchant Portal">
-          {Object.entries(pages).map(([id, p]) => (
+          {Object.entries(pages).filter(([id]) => id !== 'goodriddance').map(([id, p]) => (
             <a key={id} href={`#${id}`} className={`nav-item ${page === id ? 'active' : ''}`} aria-current={page === id ? 'page' : undefined}>
               <Icon name={p.icon} size={18} />
               {p.label}
@@ -99,9 +107,15 @@ export default function App() {
           ))}
         </nav>
         <div className="integration">
-          <Icon name="leaf" size={16} />
-          <span><strong>Connected via GoodRiddance</strong></span>
-          <span className="status-dot" />
+          <a href="#goodriddance" className={`nav-item ${page === 'goodriddance' ? 'active' : ''}`} aria-current={page === 'goodriddance' ? 'page' : undefined}>
+            <img src="/brand/goodriddance-logo.png" alt="" className="integration-logo" />
+            <span><strong>{connected ? 'Connected via GoodRiddance' : 'GoodRiddance'}</strong>{!connected && <small>Not connected</small>}</span>
+            <span className={`status-dot ${connected ? '' : 'off'}`} />
+          </a>
+        </div>
+        <div className="sidebar-links">
+          <button onClick={() => setToast(profileMessages.settings)}><Icon name="settings" size={16} /> Settings</button>
+          <button onClick={() => setToast(profileMessages.help)}><Icon name="help" size={16} /> Help</button>
         </div>
       </aside>
 
@@ -122,9 +136,9 @@ export default function App() {
           </div>
           {page === 'menu' && <Menu soldOut={soldOut} onToggle={toggleStock} />}
           {page === 'pickups' && <Pickups schedule={schedule} onSave={saveSchedule} />}
-          {page === 'analytics' && <Analytics schedule={schedule} />}
           {page === 'grants' && <Grants decisions={decisions} onDecide={decide} />}
           {page === 'network' && <Network onInvite={invite} />}
+          {page === 'goodriddance' && <GoodRiddance connected={connected} onToggle={toggleConnection} schedule={schedule} />}
         </main>
 
         <footer>
