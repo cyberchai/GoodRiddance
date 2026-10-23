@@ -22,6 +22,10 @@ npm run seed     # push data/oyster-restaurants.json to Firestore
 npm run deploy   # build and deploy to Cloud Run
 ```
 
+**Pushes to `main` deploy automatically**: the `deploy-main` Cloud Build trigger runs
+`cloudbuild.yaml` (build the Dockerfile, deploy to Cloud Run). `npm run deploy` is only
+needed for a manual deploy.
+
 `seed` and `deploy` use your active gcloud account, which needs access to
 `ruthai26nyc-2612`. To use a different signed-in account for one command:
 
