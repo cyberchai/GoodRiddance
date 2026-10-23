@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
 import Icon from './Icon'
 import Overview from './Overview'
+import Menu from './Menu'
 import Pickups from './Pickups'
+import Analytics from './Analytics'
 import Grants from './Grants'
 import Network from './Network'
+import ProfileMenu from './ProfileMenu'
 import { assess, programs } from './grantPrograms'
 import { bop, readSchedule, restaurant, writeSchedule } from './shellData'
 import './App.css'
@@ -13,9 +16,17 @@ const pages = {
     label: 'Overview', icon: 'shore', title: 'Every shell back to the harbor.',
     blurb: `${restaurant.name} recycles its oyster shells with ${bop.name}, the nonprofit restoring New York Harbor’s reefs.`,
   },
+  menu: {
+    label: 'Menu', icon: 'menu', title: 'Menu',
+    blurb: `Your DoorDash menu. Shells from oyster dishes are picked up for ${bop.name}.`,
+  },
   pickups: {
     label: 'Pickups', icon: 'truck', title: 'Shell pickups',
     blurb: 'Set a recurring pickup. A BOP truck or a DoorDash Dasher takes your shells to BOP’s transfer station.',
+  },
+  analytics: {
+    label: 'Analytics', icon: 'chart', title: 'Your shell impact',
+    blurb: `How much oyster shell ${restaurant.name} has sent to ${bop.name}.`,
   },
   grants: {
     label: 'Grants', icon: 'receipt', title: 'Grants & incentives',
@@ -34,9 +45,15 @@ function pageFromHash() {
   return Object.hasOwn(aliases, id) ? aliases[id] : 'overview'
 }
 
+const profileMessages = {
+  switch: `${restaurant.name} is the only store in this prototype.`,
+  signout: 'Signing out is turned off in this prototype.',
+}
+
 export default function App() {
   const [page, setPage] = useState(pageFromHash)
   const [schedule, setSchedule] = useState(readSchedule)
+  const [soldOut, setSoldOut] = useState([])
   const [decisions, setDecisions] = useState({})
   const [toast, setToast] = useState('')
 
@@ -54,6 +71,9 @@ export default function App() {
   function saveSchedule(next) {
     setSchedule(next)
     setToast(writeSchedule(next) ? 'Pickup schedule saved.' : 'Saved for this visit only. Your browser blocked local storage.')
+  }
+  function toggleStock(id) {
+    setSoldOut(soldOut.includes(id) ? soldOut.filter((x) => x !== id) : [...soldOut, id])
   }
   function decide(program, decision) {
     setDecisions({ ...decisions, [program.id]: decision })
@@ -73,12 +93,7 @@ export default function App() {
           <img src="/brand/doordash-logo.jpg" alt="" className="brand-logo" />
           <span>DOORDASH<small>Merchant Portal</small></span>
         </a>
-        <div className="store">
-          <span className="store-avatar">H</span>
-          <span><strong>{restaurant.name}</strong><small>{restaurant.city}, {restaurant.state}</small></span>
-        </div>
-        <nav aria-label="GoodRiddance">
-          <span className="nav-label">SHELL RECYCLING</span>
+        <nav aria-label="Merchant Portal">
           {Object.entries(pages).map(([id, p]) => (
             <a key={id} href={`#${id}`} className={`nav-item ${page === id ? 'active' : ''}`} aria-current={page === id ? 'page' : undefined}>
               <Icon name={p.icon} size={18} />
@@ -87,16 +102,10 @@ export default function App() {
             </a>
           ))}
         </nav>
-        <div className="sidebar-footer">
-          <div className="integration">
-            <Icon name="leaf" size={16} />
-            <span><strong>{bop.name}</strong><small>Connected via GoodRiddance</small></span>
-            <span className="status-dot" />
-          </div>
-          <div className="profile">
-            <span className="avatar">RO</span>
-            <span><strong>{restaurant.manager}</strong><small>Restaurant manager</small></span>
-          </div>
+        <div className="integration">
+          <Icon name="leaf" size={16} />
+          <span><strong>{bop.name}</strong><small>Connected via GoodRiddance</small></span>
+          <span className="status-dot" />
         </div>
       </aside>
 
@@ -105,7 +114,7 @@ export default function App() {
           <div className="crumbs">Merchant Portal <Icon name="chevron" size={13} /><strong>{current.label}</strong></div>
           <div className="topbar-right">
             <span className="prototype-pill"><span /> Prototype · mock data</span>
-            <span className="avatar small">RO</span>
+            <ProfileMenu onAction={(action) => setToast(profileMessages[action])} />
           </div>
         </header>
 
@@ -116,7 +125,9 @@ export default function App() {
             <p>{current.blurb}</p>
           </div>
           {page === 'overview' && <Overview schedule={schedule} pendingGrants={pendingGrants} />}
+          {page === 'menu' && <Menu soldOut={soldOut} onToggle={toggleStock} />}
           {page === 'pickups' && <Pickups schedule={schedule} onSave={saveSchedule} />}
+          {page === 'analytics' && <Analytics />}
           {page === 'grants' && <Grants decisions={decisions} onDecide={decide} />}
           {page === 'network' && <Network onInvite={invite} />}
         </main>
