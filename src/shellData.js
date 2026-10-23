@@ -41,16 +41,7 @@ export const bop = {
   name: 'Billion Oyster Project',
   dropoff: 'BOP shell transfer station, Fulton Fish Market Co-op, Hunts Point',
   curing: 'Governors Island',
-  url: 'https://www.billionoysterproject.org/restaurants',
 }
-
-export const journey = [
-  { icon: 'menu', title: 'Served', text: 'Shells go into sealed BOP bins instead of the trash.' },
-  { icon: 'truck', title: 'Picked up', text: 'A BOP route truck or a DoorDash Dasher collects the bins.' },
-  { icon: 'pin', title: 'Hunts Point', text: 'Shells gather at BOP’s transfer station at the Fulton Fish Market Co-op.' },
-  { icon: 'clock', title: 'Governors Island', text: 'Once a month they move to BOP’s curing site and cure for about a year.' },
-  { icon: 'shore', title: 'New York Harbor', text: 'Cured shells are seeded with larvae and built into living reefs.' },
-]
 
 export const carriers = {
   bop: {

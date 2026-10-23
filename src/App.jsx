@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import Icon from './Icon'
-import Overview from './Overview'
 import Menu from './Menu'
 import Pickups from './Pickups'
 import Analytics from './Analytics'
@@ -12,10 +11,6 @@ import { bop, readSchedule, restaurant, writeSchedule } from './shellData'
 import './App.css'
 
 const pages = {
-  overview: {
-    label: 'Overview', icon: 'shore', title: 'Every shell back to the harbor.',
-    blurb: `${restaurant.name} recycles its oyster shells with ${bop.name}, the nonprofit restoring New York Harbor’s reefs.`,
-  },
   menu: {
     label: 'Menu', icon: 'menu', title: 'Menu',
     blurb: `Your DoorDash menu. Shells from oyster dishes are picked up for ${bop.name}.`,
@@ -37,12 +32,13 @@ const pages = {
     blurb: `Restaurants serving oysters on DoorDash that could recycle their shells with ${bop.name}.`,
   },
 }
-const aliases = { oysters: 'network' }
+const defaultPage = 'menu'
+const aliases = { oysters: 'network', overview: 'analytics' }
 
 function pageFromHash() {
   const id = location.hash.slice(1)
   if (Object.hasOwn(pages, id)) return id
-  return Object.hasOwn(aliases, id) ? aliases[id] : 'overview'
+  return Object.hasOwn(aliases, id) ? aliases[id] : defaultPage
 }
 
 const profileMessages = {
@@ -89,7 +85,7 @@ export default function App() {
   return (
     <div className="app-shell">
       <aside className="sidebar">
-        <a className="brand" href="#overview">
+        <a className="brand" href={`#${defaultPage}`}>
           <img src="/brand/doordash-logo.jpg" alt="" className="brand-logo" />
           <span>DOORDASH<small>Merchant Portal</small></span>
         </a>
@@ -124,10 +120,9 @@ export default function App() {
             <h1>{current.title}</h1>
             <p>{current.blurb}</p>
           </div>
-          {page === 'overview' && <Overview schedule={schedule} pendingGrants={pendingGrants} />}
           {page === 'menu' && <Menu soldOut={soldOut} onToggle={toggleStock} />}
           {page === 'pickups' && <Pickups schedule={schedule} onSave={saveSchedule} />}
-          {page === 'analytics' && <Analytics />}
+          {page === 'analytics' && <Analytics schedule={schedule} />}
           {page === 'grants' && <Grants decisions={decisions} onDecide={decide} />}
           {page === 'network' && <Network onInvite={invite} />}
         </main>
