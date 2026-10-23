@@ -12,6 +12,10 @@
   --green-line: #e3e9d8;
   --amber: #8a5a00;
   --amber-tint: #fdf3dc;
+  /* The Gemini agent's work */
+  --blue: #2f55c7;
+  --blue-tint: #eef2fc;
+  --blue-line: #d8e0f6;
 }
 
 /* ---- Shell: fixed sidebar, sticky top bar ---- */
@@ -59,8 +63,11 @@ nav { display: flex; flex-direction: column; gap: 2px; margin-top: 20px; }
 .nav-count { margin-left: auto; padding: 1px 7px; border-radius: 10px; background: #ffded6; color: #c62110; font-size: 12px; font-weight: 600; }
 
 .integration { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line); }
-.integration .nav-item.active { background: var(--green-tint); }
+.integration .nav-item.active { background: var(--green-tint); color: var(--green); }
+.integration .nav-item.active svg { color: var(--green); }
 .integration .nav-item.active::before { background: var(--green); }
+/* GoodRiddance's own pages, indented under its connection on a tree line. */
+.subnav { margin: 2px 0 0 22px; padding-left: 10px; border-left: 1px solid var(--line); }
 .integration strong { color: var(--green); }
 .integration-logo { flex-shrink: 0; width: 26px; height: 26px; object-fit: contain; }
 .status-dot.off { background: #c4c4bf; }
@@ -206,12 +213,61 @@ code { font-size: 13px; }
 /* ---- Grants ---- */
 
 .opportunities { margin: 8px 0 0; padding: 0; list-style: none; }
-.opportunities li { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 1px solid var(--line); }
-.opportunities li:first-child { border-top: 0; }
+.opportunities > li { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 1px solid var(--line); }
+.opportunities > li:first-child { border-top: 0; }
 .opportunity a { color: var(--ink); font-size: 15px; }
 .opportunity .chip { margin-left: 6px; }
+/* One color per kind; green stays reserved for the status chips. */
+.kind-grant { background: var(--blue); color: #fff; }
+.kind-press { background: #5b3fc4; color: #fff; }
+.kind-award { background: var(--amber); color: #fff; }
 .opportunity p { margin-top: 3px; font-size: 13px; }
 .decision-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ---- Gemini agent: a draft's status line and its workspace ---- */
+
+.opportunities.drafts > li { display: block; }
+.opportunity-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.draft-progress { display: flex; align-items: center; gap: 6px; margin-top: 6px; color: var(--blue); font-size: 13px; font-weight: 600; }
+.draft-progress.ready { color: var(--green); }
+.draft-progress.failed { color: var(--amber); }
+.draft-progress.none { color: var(--muted); font-weight: 400; }
+
+.agent-run { margin-top: 14px; overflow: hidden; border: 1px solid var(--blue-line); border-radius: 10px; background: #fbfcff; }
+.agent-run-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 11px 16px; border-bottom: 1px solid var(--blue-line); background: var(--blue-tint); }
+.agent-name { display: inline-flex; align-items: center; gap: 6px; color: var(--blue); font-size: 14px; font-weight: 650; }
+.agent-status { margin-left: auto; padding: 3px 10px; border-radius: 20px; background: #fff; color: var(--blue); font-size: 12px; font-weight: 600; }
+.agent-status.ready { background: var(--green-tint); color: var(--green); }
+.agent-status.failed { background: var(--amber-tint); color: var(--amber); }
+.agent-run-body { display: grid; grid-template-columns: minmax(220px, 1fr) minmax(0, 1.5fr); gap: 24px; padding: 18px 16px 4px; }
+
+/* Steps on a timeline: an icon per step, joined by a line. */
+.agent-steps { margin: 0; padding: 0; list-style: none; }
+.agent-steps li { position: relative; display: flex; gap: 10px; padding-bottom: 14px; animation: step-in .25s ease both; }
+.agent-steps li:not(:last-child)::before { content: ''; position: absolute; left: 10px; top: 24px; bottom: 2px; width: 1px; background: var(--blue-line); }
+.agent-steps li > svg { flex-shrink: 0; box-sizing: content-box; padding: 3px; border-radius: 50%; background: var(--blue-tint); color: var(--blue); }
+.agent-steps li.fix > svg { background: var(--amber-tint); color: var(--amber); }
+.agent-steps li.failed > svg { background: var(--red-tint); color: var(--red-ink); }
+.agent-steps strong { display: block; color: var(--ink); font-size: 13px; font-weight: 600; line-height: 20px; }
+.agent-steps small { display: block; color: var(--muted); font-size: 12px; line-height: 1.45; }
+@keyframes step-in { from { opacity: 0; transform: translateY(4px); } }
+.agent-pulse { flex-shrink: 0; width: 8px; height: 8px; margin: 6px; border-radius: 50%; background: var(--blue); animation: agent-pulse 1.2s ease-in-out infinite; }
+@keyframes agent-pulse { 50% { opacity: .35; transform: scale(.7); } }
+
+.agent-form label { margin-bottom: 14px; }
+.agent-form input[readonly], .agent-form textarea[readonly] { background: #fff; }
+/* Answers grow to fit, where the browser supports it. */
+.agent-form textarea { field-sizing: content; min-height: 72px; max-height: 320px; }
+.agent-form label.filling input, .agent-form label.filling textarea { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-tint); }
+.source-chip { align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 20px; background: var(--blue-tint); color: var(--blue); font-size: 11px; font-weight: 600; }
+.agent-note { display: flex; gap: 8px; margin: 0 16px 14px; padding: 10px 12px; border-radius: 8px; background: var(--blue-tint); color: var(--blue); font-size: 13px; line-height: 1.45; }
+.agent-note svg { flex-shrink: 0; margin-top: 2px; }
+.agent-run-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 16px; border-top: 1px solid var(--blue-line); }
+.agent-run-actions { display: flex; gap: 8px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-steps li, .agent-pulse { animation: none; }
+}
 
 /* ---- Menu (POS list) ---- */
 
@@ -323,6 +379,11 @@ main.map-page { position: relative; max-width: none; height: calc(100vh - 61px);
 .network-place-details { padding: 0 12px 14px 54px; font-size: 13px; }
 .oyster-line { margin-top: 4px; color: var(--green); font-size: 14px; font-weight: 600; }
 .network-place-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 12px; }
+.invite-draft { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--green-line); }
+.invite-draft label { margin-bottom: 10px; }
+.invite-draft textarea { font-size: 13px; }
+.invite-draft .network-place-actions { margin-top: 0; }
+.invite-status { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; color: var(--blue); font-size: 12px; font-weight: 600; }
 .network-caveat { display: flex; gap: 8px; margin-top: 8px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; line-height: 1.5; }
 .network-caveat svg { flex-shrink: 0; margin-top: 2px; }
 
@@ -334,7 +395,7 @@ main.map-page { position: relative; max-width: none; height: calc(100vh - 61px);
   .topbar { padding: 0 24px; }
   main { padding: 24px 24px 40px; }
   footer { margin: 0 24px; }
-  .pickup-layout, .carrier-options, .analytics-row { grid-template-columns: 1fr; }
+  .pickup-layout, .carrier-options, .analytics-row, .agent-run-body { grid-template-columns: 1fr; }
   .integration strong, .integration small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 }
 
@@ -342,6 +403,7 @@ main.map-page { position: relative; max-width: none; height: calc(100vh - 61px);
   .sidebar { position: static; width: auto; padding: 14px 16px 10px; border-right: 0; border-bottom: 1px solid var(--line); overflow: visible; }
   nav { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 12px; }
   .integration { margin-top: 10px; padding: 10px 4px 0; }
+  .subnav { margin: 4px 0 0; padding-left: 0; border-left: 0; }
   .sidebar-links { flex-direction: row; margin-top: 8px; padding: 8px 0 0; }
   .profile-button-text { display: none; }
   .nav-item { justify-content: center; font-size: 13px; }
@@ -353,7 +415,7 @@ main.map-page { position: relative; max-width: none; height: calc(100vh - 61px);
   footer { flex-direction: column; margin: 0 16px; }
   h1 { font-size: 24px; }
   .form-row { grid-template-columns: 1fr; }
-  .card-heading, .form-actions { flex-direction: column; align-items: stretch; }
+  .card-heading, .form-actions, .opportunity-row { flex-direction: column; align-items: stretch; }
   /* On phones the panel sits under the map instead of over it. */
   main.map-page { height: auto; }
   .map-view { position: static; }

@@ -29,8 +29,12 @@ export const restaurant = {
   zip: '11201',
   lat: 40.6912,
   lng: -73.9973,
-  manager: 'Restaurant Owner',
+  // The signed-in merchant account (sample)
+  manager: 'Jordan Ellis',
   role: 'Restaurant manager',
+  email: 'jordan@harborandhearth.example',
+  phone: '(718) 555-0142',
+  hours: 'Tuesday to Sunday, 5–11 PM',
   oystersPerWeek: oysterItems.reduce((sum, item) => sum + item.shellsPerWeek, 0),
 }
 
@@ -158,3 +162,12 @@ const sampleWeeks = [
 ]
 export const dasherLbPerPickup = 34 // sample: a Dasher carries buckets, not full bins
 export const weeklyShells = sampleWeeks.map((week, i) => ({ ...week, pickups: 3, weekOf: weekStart(sampleWeeks.length - i) }))
+
+// Totals over some of `weeklyShells`, shared by the GoodRiddance page and the Gemini agents.
+export function shellTotals(weeks) {
+  const lb = weeks.reduce((sum, w) => sum + w.lb, 0)
+  const pickups = weeks.reduce((sum, w) => sum + w.pickups, 0)
+  const dasherPickups = weeks.reduce((sum, w) => sum + w.dasher, 0)
+  const shells = Math.round(lb / lbPerShell)
+  return { lb, pickups, dasherPickups, dasherLb: dasherPickups * dasherLbPerPickup, shells, oysterHomes: shells * oystersPerShell[0] }
+}
