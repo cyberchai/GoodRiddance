@@ -104,7 +104,7 @@ export default function App() {
         </nav>
         <div className="integration">
           <Icon name="leaf" size={16} />
-          <span><strong>{bop.name}</strong><small>Connected via GoodRiddance</small></span>
+          <span><strong>Connected via GoodRiddance</strong></span>
           <span className="status-dot" />
         </div>
       </aside>
