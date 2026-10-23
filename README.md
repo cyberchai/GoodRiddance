@@ -1,21 +1,30 @@
-# DoorDash Merchant Portal · GoodRiddance
+# GoodRiddance
 
-A React/Vite frontend prototype of a GoodRiddance integration within the DoorDash merchant experience.
+Manhattan restaurants with oysters on their DoorDash delivery menus.
 
-## Run locally
+**Live:** https://good-riddance-894711667409.us-east4.run.app
 
-- `npm install`
-- `npm run dev`
-- `npm run lint`
-- `npm run build`
+## How it fits together
 
-## Pages
+- `data/oyster-restaurants.json` — the dataset, scraped from public DoorDash store pages.
+- **Firestore** (`ruthai26nyc-2612`, `us-east4`) — where the data lives. `npm run seed`
+  loads the JSON into the `restaurants` collection and the `meta/oysterDataset` doc.
+- `server/index.js` — Express server on **Cloud Run** that serves the built React app and
+  `GET /api/restaurants` from Firestore.
+- `src/` — the GoodRiddance restaurant workspace (menu, recurring pickup, analytics). Its
+  Oysters page (`#oysters`) reads `/api/restaurants`.
 
-- **Menu:** six sample dishes, category/search controls, session-only editing and availability, food-waste and packaging opportunities.
-- **Recurring pickup:** editable schedule saved to this browser’s localStorage. No pickup is booked.
-- **Analytics:** explicitly labeled sample waste charts, period comparisons, government tax-benefit records, donation totals and organization breakdowns, financial activity charts, and an illustrative Billion Oyster Project impact panel for oysters, water filtration, biodiversity, shoreline protection, and CO₂e emissions avoided. Financial and environmental figures are independent mock scenarios, not actual benefits, payments, verified outcomes, or conversion factors.
-- **Discovery:** simulated menu/photo analysis, material filters, opportunity preparation guidance, an illustrated neighborhood map, selectable fictional collaborators, downloadable resource plans, editable email drafts, and simulated outreach.
+## Commands
 
-Discovery photos use local object URLs and are never transmitted. Results are preset examples, not AI-generated findings. Map locations and restaurant names are fictional. Billion Oyster Project is an illustrative resource; participation and contact details are not verified. Drafts and resource plans remain in React state across page navigation and reset on reload. No emails are sent.
+```bash
+npm run dev      # local app; /api is proxied to the deployed service
+npm run seed     # push data/oyster-restaurants.json to Firestore
+npm run deploy   # build and deploy to Cloud Run
+```
 
-The app uses existing dependencies, local illustrations, and locally hosted DoorDash TT Norms font files. The DoorDash logo was downloaded from the image URL supplied for this prototype. There are no AI, email, Google Maps, backend, or deployment integrations.
+`seed` and `deploy` use your active gcloud account, which needs access to
+`ruthai26nyc-2612`. To use a different signed-in account for one command:
+
+```bash
+CLOUDSDK_CORE_ACCOUNT=you@example.com npm run deploy
+```

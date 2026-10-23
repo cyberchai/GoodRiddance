@@ -25,6 +25,20 @@ function FoodArt({ type }) {
     {Array.from({length:14},(_,x)=><circle key={x} cx={157+((x*47+seed)%175)} cy={75+((x*31)%112)} r="2" fill="#425932"/>)}<path d="M405 0v250" stroke="#f9f4e9" strokeWidth="33" opacity=".3"/>
   </svg>
 }
+function formatPrice(price) { return price == null ? '' : `$${price.toFixed(2)}` }
+function OysterRestaurants() {
+  const [data, setData] = useState(null)
+  const [error, setError] = useState('')
+  useEffect(() => { loadRestaurants().then(setData, err => setError(err.message)) }, [])
+  if (error) return <div className="empty-state"><Icon name="pin" size={32}/><h2>Couldn’t load restaurants</h2><p>{error}</p></div>
+  if (!data) return <div className="empty-state"><Icon name="clock" size={32}/><h2>Loading restaurants…</h2></div>
+  return <>
+    <div className="sample-banner live-banner"><Icon name="pin" size={18}/><strong>Live data</strong><span>{data.source}</span></div>
+    <div className="section-caption"><span>Manhattan <span className="muted">· {data.restaurants.length} {data.restaurants.length===1?'restaurant':'restaurants'} with oysters for delivery</span></span><span><span className="status-dot"/> Synced from Firestore</span></div>
+    <div className="menu-grid">{data.restaurants.map(r=><article className="menu-card" key={r.id}><div className="food-image"><FoodArt type="oysters"/>{r.priceRange&&<span className="food-tag">{r.priceRange}</span>}</div><div className="item-content"><div className="item-title"><h2>{r.name}</h2>{r.rating!=null&&<strong>★ {r.rating}<span className="muted">({r.ratingCount})</span></strong>}</div><p>{[r.street,r.neighborhood].filter(Boolean).join(' · ')}</p><details className="full-menu"><summary>Full delivery menu · {r.menu.reduce((n,s)=>n+s.items.length,0)} items</summary>{r.menu.map((s,i)=><div key={i}><h3>{s.section}</h3><ul>{s.items.map((item,j)=><li key={j}><span>{item.name}</span><span>{formatPrice(item.price)}</span></li>)}</ul></div>)}</details></div><div className="item-opportunity"><div className="opportunity-label"><Icon name="recycle" size={14}/> OYSTERS ON THE MENU <Icon name="arrow" size={15}/></div><ul className="oyster-list">{r.oysterItems.map(o=><li key={o.name}><span>{o.name}</span><span>{formatPrice(o.price)}</span></li>)}</ul><a className="dd-link" href={r.doordashUrl} target="_blank" rel="noreferrer">View on DoorDash <Icon name="arrow" size={14}/></a></div></article>)}</div>
+    {data.checkedWithoutOysters.length>0&&<section className="panel checked-panel"><h2>Checked, no oysters for delivery.</h2><p>Tagged “Oyster & Raw Bar” on DoorDash, but oysters aren’t on their delivery menus.</p><ul>{data.checkedWithoutOysters.map(r=><li key={r.id}><a href={r.doordashUrl} target="_blank" rel="noreferrer">{r.name}</a>{r.street&&<span> · {r.street}</span>}</li>)}</ul></section>}
+  </>
+}
 function App() {
   const [page, setPage] = useState(() => ['menu','pickup','analytics','discovery'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'menu')
   const [items, setItems] = useState(initialItems)
