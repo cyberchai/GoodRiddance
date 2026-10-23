@@ -428,3 +428,4 @@ main.map-page { position: relative; max-width: none; height: calc(100vh - 61px);
   .columns li.minor .column-label { display: none; }
   .bar-list li { grid-template-columns: 1fr; gap: 4px; }
 }
+.map-panel-purpose { margin-top: 10px; padding: 10px 12px; border-radius: 8px; background: var(--green-tint); color: var(--green); font-size: 13px; line-height: 1.5; }
