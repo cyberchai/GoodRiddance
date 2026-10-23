@@ -560,7 +560,6 @@ export default function CustomerApp() {
       <span className="cx-proto-tag">Concept prototype</span>
       <h1>Good Riddance</h1>
       <p>Customer screens for a delivery app. Sample data only; not affiliated with any delivery company.</p>
-      <p className="cx-muted">Restaurant workspace: <a href="/">open</a></p>
     </aside>
     <div className="cx-phone">
       <div className="cx-screen">

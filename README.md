@@ -22,6 +22,7 @@ on DoorDash Drive. This repo holds two clickable prototypes that share one app:
   Oysters page (`#oysters`) reads `/api/restaurants`.
 - `src/customer/` — the customer-side concept prototype at **`/customer`** (see below).
 - `src/main.jsx` — picks which side to load from the URL path.
+- `src/ViewSwitch.jsx` — the floating "Restaurant view | Customer view" pill for jumping between the two sides in a demo.
 
 ## Customer side (`/customer`)
 
