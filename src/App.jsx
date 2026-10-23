@@ -89,6 +89,8 @@ export default function App() {
 
   const pendingGrants = opportunities.filter((o) => o.status === 'ready' && !decisions[o.id]).length
   const current = pages[page]
+  // NYC network is a full-page map, with no heading or footer around it.
+  const fullBleed = page === 'network'
 
   return (
     <div className="app-shell">
@@ -127,23 +129,23 @@ export default function App() {
           </div>
         </header>
 
-        <main>
-          <div className="page-heading">
+        <main className={fullBleed ? 'map-page' : undefined}>
+          {!fullBleed && <div className="page-heading">
             <p className="eyebrow">{restaurant.name} · {restaurant.city}, {restaurant.state}</p>
             <h1>{current.title}</h1>
             <p>{current.blurb}</p>
-          </div>
+          </div>}
           {page === 'menu' && <Menu soldOut={soldOut} onToggle={toggleStock} />}
           {page === 'pickups' && <Pickups schedule={schedule} onSave={saveSchedule} />}
           {page === 'grants' && <Grants decisions={decisions} onDecide={decide} />}
-          {page === 'network' && <Network onInvite={invite} />}
+          {page === 'network' && <Network title={current.title} onInvite={invite} />}
           {page === 'goodriddance' && <GoodRiddance connected={connected} onToggle={toggleConnection} schedule={schedule} />}
         </main>
 
-        <footer>
+        {!fullBleed && <footer>
           <span>DoorDash Merchant Portal</span>
           <span>GoodRiddance × {bop.name}</span>
-        </footer>
+        </footer>}
       </div>
 
       <div className="toast-region" role="status" aria-live="polite">{toast && <div className="toast">{toast}</div>}</div>
