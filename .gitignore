@@ -7,6 +7,7 @@ dist-ssr/
 build/
 .vite/
 *.tsbuildinfo
+.firebase/
 
 # Test coverage
 coverage/
@@ -35,3 +36,4 @@ Thumbs.db
 *.swp
 *.swo
 *~
+.playwright-mcp/
