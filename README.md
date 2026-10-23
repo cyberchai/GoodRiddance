@@ -11,7 +11,8 @@ Manhattan restaurants with oysters on their DoorDash delivery menus.
   loads the JSON into the `restaurants` collection and the `meta/oysterDataset` doc.
 - `server/index.js` — Express server on **Cloud Run** that serves the built React app and
   `GET /api/restaurants` from Firestore.
-- `src/` — the React app, which reads `/api/restaurants`.
+- `src/` — the GoodRiddance restaurant workspace (menu, recurring pickup, analytics). Its
+  Oysters page (`#oysters`) reads `/api/restaurants`.
 
 ## Commands
 

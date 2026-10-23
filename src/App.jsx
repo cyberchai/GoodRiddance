@@ -2,102 +2,69 @@ import { useEffect, useState } from 'react'
 import { loadRestaurants } from './data.js'
 import './App.css'
 
-function formatPrice(price) {
-  return price == null ? '' : `$${price.toFixed(2)}`
+function Icon({ name, size = 20, ...props }) {
+  const paths = { menu: 'M4 3v7a3 3 0 0 0 6 0V3M7 3v18M18 3c-3 3-3 8 0 9v9M18 3v9', calendar: 'M4 5h16v16H4zM8 3v4M16 3v4M4 10h16M8 14h2M14 14h2M8 17h2', chart: 'M4 3v18h17M8 16v-5M13 16V7M18 16V4', arrow: 'M5 12h14M14 7l5 5-5 5', chevron: 'm9 5 7 7-7 7', down: 'm6 9 6 6 6-6', search: 'M21 21l-5-5M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0', plus: 'M12 5v14M5 12h14', leaf: 'M20 3C8 2 3 7 5 14s15 7 15-11ZM4 21 15 10', check: 'm5 12 4 4L19 6', close: 'm6 6 12 12M6 18 18 6', bell: 'M6 16V9a6 6 0 0 1 12 0v7l2 2H4l2-2M10 21h4', pin: 'M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0ZM14 10a2 2 0 1 1-4 0 2 2 0 0 1 4 0', help: 'M9 9a3 3 0 1 1 5 2c-2 1-2 2-2 3M12 17h.01M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0', box: 'm3 7 9-4 9 4v11l-9 4-9-4ZM3 7l9 4 9-4M12 11v11', clock: 'M12 7v5l3 2M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0', recycle: 'm8 7 4-5 4 5M12 2v6M19 10l3 7-7 1M22 17l-5-3M12 21H4l1-7M4 21l4-5', edit: 'm15 4 5 5M4 20l5-1L21 7l-5-5L4 14z' }
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}><path d={paths[name] || paths.leaf}/></svg>
 }
 
-function App() {
+const initialItems = [
+  { id: 1, name: 'East Coast Oysters', description: 'Half dozen, cucumber mignonette, fresh lemon', price: '24', category: 'Seafood', art: 'oysters', tag: 'BESTSELLER', opportunity: 'Give shells a second life', detail: 'Restore New York’s reefs with Billion Oyster Project.', material: 'Oyster shells', available: true },
+  { id: 2, name: 'Grilled Atlantic Salmon', description: 'Herb-roasted potatoes, seasonal greens, lemon butter', price: '32', category: 'Seafood', art: 'salmon', opportunity: 'Small scraps. Big impact.', detail: 'Turn fish trimmings and vegetable scraps into compost.', material: 'Food scraps', available: true },
+  { id: 3, name: 'Garlic Butter Shrimp', description: 'Wild-caught shrimp, garlic butter, a touch of chili', price: '26', category: 'Seafood', art: 'shrimp', opportunity: 'A better home for shells', detail: 'Keep shrimp shells out of landfills with composting.', material: 'Shellfish scraps', available: true },
+  { id: 4, name: 'House Sourdough', description: 'Warm, slow-fermented bread with whipped sea salt butter', price: '8', category: 'Starters', art: 'bread', tag: 'HOUSE FAVORITE', opportunity: 'Every crumb counts', detail: 'Give surplus bread a new purpose through composting.', material: 'Bread & grains', available: true },
+  { id: 5, name: 'Crispy Calamari', description: 'Lightly fried, cherry peppers, house-made lemon aioli', price: '18', category: 'Starters', art: 'calamari', opportunity: 'Close the loop on cooking oil', detail: 'Collect used cooking oil for a second life as biofuel.', material: 'Used cooking oil', available: true },
+  { id: 6, name: 'Little Gem Salad', description: 'Crisp little gems, shaved parmesan, green goddess', price: '14', category: 'Starters', art: 'salad', opportunity: 'From garden to garden', detail: 'Turn vegetable trimmings into nutrient-rich compost.', material: 'Vegetable scraps', available: true },
+]
+const emptySchedule = { frequency: 'Weekly', days: ['Tuesday', 'Friday'], time: '09:00', material: 'All recyclable materials', instructions: '', address: '87 Atlantic Avenue, Brooklyn, NY 11201' }
+function readSchedule() { try { const value = JSON.parse(localStorage.getItem('goodriddance-schedule')); return value && ['Weekly','Every other week'].includes(value.frequency) && Array.isArray(value.days) && value.days.length && typeof value.time === 'string' && typeof value.address === 'string' ? { ...emptySchedule, ...value } : null } catch { return null } }
+function FoodArt({ type }) {
+  const seed = type.length
+  return <svg className={`food-art ${type}`} viewBox="0 0 480 250" role="img" aria-label={`Illustrated ${type} dish placeholder`}>
+    <defs><radialGradient id={`bg-${type}`}><stop stopColor="#eee6d7"/><stop offset="1" stopColor="#d2c6b1"/></radialGradient><filter id={`shadow-${type}`}><feDropShadow dx="0" dy="7" stdDeviation="8" floodOpacity=".15"/></filter><pattern id={`grain-${type}`} width="13" height="13" patternUnits="userSpaceOnUse"><path d="M0 7h13" stroke="#fff" strokeOpacity=".08"/></pattern></defs>
+    <rect width="480" height="250" fill={`url(#bg-${type})`}/><rect width="480" height="250" fill={`url(#grain-${type})`}/><path d="M0 210 480 105M0 220 480 115" stroke="#c2b59e" opacity=".3"/>
+    <ellipse cx="245" cy="130" rx="151" ry="109" fill="#f8f7f0" filter={`url(#shadow-${type})`}/><ellipse cx="245" cy="130" rx="133" ry="93" fill="none" stroke="#e5e3d8" strokeWidth="2"/>
+    {type === 'oysters' ? <><ellipse cx="245" cy="130" rx="122" ry="81" fill="#dce5e3"/>{[0,1,2,3,4,5].map((x) => <g key={x} transform={`translate(${180 + (x%3)*62},${93+Math.floor(x/3)*72}) rotate(${x*21-30})`}><path d="M-29 2Q-30-30 0-28Q34-17 28 9Q6 35-18 23Z" fill="#758b8b"/><path d="M-24 0Q-20-23 1-23Q29-12 22 8Q3 28-15 17Z" fill="#f3ede0"/><ellipse rx="16" ry="10" fill="#bbac8e"/><path d="M-12 0q13-11 23 2" fill="none" stroke="#e5d5b9" strokeWidth="4"/></g>)}<path d="m312 180 34-30q15 34-15 44Z" fill="#edcf5a"/></> : type === 'salmon' ? <><g fill="#52713b">{[0,1,2,3,4,5,6].map(x=><ellipse key={x} cx={170+x*20} cy={125+Math.sin(x)*34} rx="18" ry="29" transform={`rotate(${x*42} ${170+x*20} ${125+Math.sin(x)*34})`}/>)}</g><g transform="rotate(-16 245 130)"><rect x="186" y="85" width="136" height="84" rx="17" fill="#d87950"/><path d="m202 87 13 78m12-78 14 78m11-78 15 78m10-78 15 78" stroke="#edab7a" strokeWidth="5"/><path d="M194 112h118M195 140h115" stroke="#8f492f" strokeWidth="3" opacity=".5"/></g><circle cx="320" cy="167" r="24" fill="#ecd261"/><circle cx="320" cy="167" r="18" fill="none" stroke="#fff1af" strokeWidth="2"/></> : type === 'shrimp' ? <><ellipse cx="245" cy="130" rx="108" ry="67" fill="#e5bd6a"/>{[0,1,2,3,4,5,6,7].map(x=><g key={x} transform={`translate(${172+(x%4)*47},${105+Math.floor(x/4)*50}) rotate(${x*60})`}><path d="M14-12C-21-35-33 25 8 16" fill="none" stroke="#ed9e68" strokeWidth="16"/><path d="m11 8 14 11-13 6" fill="#c46c48"/><path d="M-12-16-17-5M-22 6l12-2" stroke="#d27b52" strokeWidth="2"/></g>)}</> : type === 'bread' ? <><g transform="rotate(-22 240 130)"><ellipse cx="240" cy="130" rx="104" ry="65" fill="#9d5f2b"/><ellipse cx="240" cy="124" rx="103" ry="61" fill="#c28b50"/><path d="m180 85 16 79m15-98 16 104m16-104 16 101m16-89 13 70" stroke="#ead5ac" strokeWidth="13"/><path d="m180 85 16 79m15-98 16 104m16-104 16 101m16-89 13 70" stroke="#79502e" strokeWidth="3"/></g><circle cx="340" cy="160" r="29" fill="#dfded2"/><circle cx="340" cy="160" r="23" fill="#f6e5a7"/></> : type === 'calamari' ? <>{Array.from({length:17},(_,x)=><ellipse key={x} cx={169+(x%5)*36+Math.sin(x)*12} cy={82+Math.floor(x/5)*29} rx="20" ry="15" fill="none" stroke={x%2?'#cd9c52':'#dbb66e'} strokeWidth="10" transform={`rotate(${x*31} ${169+(x%5)*36} ${82+Math.floor(x/5)*29})`}/>)}<circle cx="326" cy="173" r="27" fill="#e4e1d2"/><circle cx="326" cy="173" r="21" fill="#f3e8ba"/></> : <>{Array.from({length:23},(_,x)=><ellipse key={x} cx={164+(x%6)*32} cy={82+Math.floor(x/6)*30} rx="23" ry="15" fill={['#647e36','#93a255','#3e673a','#b3b86c'][x%4]} transform={`rotate(${x*57} ${164+(x%6)*32} ${82+Math.floor(x/6)*30})`}/>)}<path d="m170 100 30 8m25 36 30-10m20-40 28 15m-98 43-22 4m91-2 24 14" stroke="#f1dfb4" strokeWidth="8"/></>}
+    {Array.from({length:14},(_,x)=><circle key={x} cx={157+((x*47+seed)%175)} cy={75+((x*31)%112)} r="2" fill="#425932"/>)}<path d="M405 0v250" stroke="#f9f4e9" strokeWidth="33" opacity=".3"/>
+  </svg>
+}
+function formatPrice(price) { return price == null ? '' : `$${price.toFixed(2)}` }
+function OysterRestaurants() {
   const [data, setData] = useState(null)
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    loadRestaurants().then(setData, (err) => setError(err.message))
-  }, [])
-
-  if (error) return <p className="status">Couldn't load restaurants: {error}</p>
-  if (!data) return <p className="status">Loading…</p>
-
-  return (
-    <main>
-      <header>
-        <h1>{data.title}</h1>
-        <p className="source">{data.source}</p>
-      </header>
-
-      <section className="restaurants">
-        {data.restaurants.map((restaurant) => (
-          <RestaurantCard key={restaurant.id} restaurant={restaurant} />
-        ))}
-      </section>
-
-      {data.checkedWithoutOysters.length > 0 && (
-        <section className="checked">
-          <h2>Checked, but no oysters on the delivery menu</h2>
-          <ul>
-            {data.checkedWithoutOysters.map((r) => (
-              <li key={r.id}>
-                <a href={r.doordashUrl} target="_blank" rel="noreferrer">
-                  {r.name}
-                </a>
-                {r.street && ` · ${r.street}`}
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-    </main>
-  )
+  const [error, setError] = useState('')
+  useEffect(() => { loadRestaurants().then(setData, err => setError(err.message)) }, [])
+  if (error) return <div className="empty-state"><Icon name="pin" size={32}/><h2>Couldn’t load restaurants</h2><p>{error}</p></div>
+  if (!data) return <div className="empty-state"><Icon name="clock" size={32}/><h2>Loading restaurants…</h2></div>
+  return <>
+    <div className="sample-banner live-banner"><Icon name="pin" size={18}/><strong>Live data</strong><span>{data.source}</span></div>
+    <div className="section-caption"><span>Manhattan <span className="muted">· {data.restaurants.length} {data.restaurants.length===1?'restaurant':'restaurants'} with oysters for delivery</span></span><span><span className="status-dot"/> Synced from Firestore</span></div>
+    <div className="menu-grid">{data.restaurants.map(r=><article className="menu-card" key={r.id}><div className="food-image"><FoodArt type="oysters"/>{r.priceRange&&<span className="food-tag">{r.priceRange}</span>}</div><div className="item-content"><div className="item-title"><h2>{r.name}</h2>{r.rating!=null&&<strong>★ {r.rating}<span className="muted">({r.ratingCount})</span></strong>}</div><p>{[r.street,r.neighborhood].filter(Boolean).join(' · ')}</p><details className="full-menu"><summary>Full delivery menu · {r.menu.reduce((n,s)=>n+s.items.length,0)} items</summary>{r.menu.map((s,i)=><div key={i}><h3>{s.section}</h3><ul>{s.items.map((item,j)=><li key={j}><span>{item.name}</span><span>{formatPrice(item.price)}</span></li>)}</ul></div>)}</details></div><div className="item-opportunity"><div className="opportunity-label"><Icon name="recycle" size={14}/> OYSTERS ON THE MENU <Icon name="arrow" size={15}/></div><ul className="oyster-list">{r.oysterItems.map(o=><li key={o.name}><span>{o.name}</span><span>{formatPrice(o.price)}</span></li>)}</ul><a className="dd-link" href={r.doordashUrl} target="_blank" rel="noreferrer">View on DoorDash <Icon name="arrow" size={14}/></a></div></article>)}</div>
+    {data.checkedWithoutOysters.length>0&&<section className="panel checked-panel"><h2>Checked, no oysters for delivery.</h2><p>Tagged “Oyster & Raw Bar” on DoorDash, but oysters aren’t on their delivery menus.</p><ul>{data.checkedWithoutOysters.map(r=><li key={r.id}><a href={r.doordashUrl} target="_blank" rel="noreferrer">{r.name}</a>{r.street&&<span> · {r.street}</span>}</li>)}</ul></section>}
+  </>
 }
-
-function RestaurantCard({ restaurant: r }) {
-  const itemCount = r.menu.reduce((n, section) => n + section.items.length, 0)
-
-  return (
-    <article className="card">
-      <h2>{r.name}</h2>
-      <p className="meta">
-        {[r.street, r.neighborhood].filter(Boolean).join(' · ')}
-      </p>
-      <p className="meta">
-        {[r.rating != null && `★ ${r.rating} (${r.ratingCount})`, r.priceRange]
-          .filter(Boolean)
-          .join(' · ')}
-      </p>
-
-      <ul className="oysters">
-        {r.oysterItems.map((item) => (
-          <li key={item.name}>
-            <div className="item-line">
-              <span className="item-name">{item.name}</span>
-              <span className="price">{formatPrice(item.price)}</span>
-            </div>
-            {item.description && <p className="desc">{item.description}</p>}
-          </li>
-        ))}
-      </ul>
-
-      <details>
-        <summary>Full delivery menu ({itemCount} items)</summary>
-        {r.menu.map((section, i) => (
-          <div key={i} className="menu-section">
-            <h3>{section.section}</h3>
-            <ul>
-              {section.items.map((item, j) => (
-                <li key={j} className="item-line">
-                  <span className="item-name">{item.name}</span>
-                  <span className="price">{formatPrice(item.price)}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </details>
-
-      <a className="dd-link" href={r.doordashUrl} target="_blank" rel="noreferrer">
-        View on DoorDash →
-      </a>
-    </article>
-  )
+function App() {
+  const [page, setPage] = useState(() => ['menu','pickup','analytics','oysters'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'menu')
+  const [items, setItems] = useState(initialItems)
+  const [category, setCategory] = useState('All items')
+  const [query, setQuery] = useState('')
+  const [saved, setSaved] = useState(readSchedule)
+  const [schedule, setSchedule] = useState(() => readSchedule() || emptySchedule)
+  const [notice, setNotice] = useState('')
+  const [modal, setModal] = useState(null)
+  const [range, setRange] = useState('Last 6 months')
+  function navigate(next) { setPage(next); location.hash = next; setNotice('') }
+  function saveSchedule(e) { e.preventDefault(); if (!schedule.days.length) { setNotice('Choose at least one pickup day.'); return } try { localStorage.setItem('goodriddance-schedule', JSON.stringify(schedule)); setSaved({...schedule}); setNotice('Your recurring pickup schedule has been saved.') } catch { setNotice('Your browser could not save the schedule. Please allow local storage and try again.') } }
+  const filtered = items.filter(i => (category === 'All items' || i.category === category) && `${i.name} ${i.description}`.toLowerCase().includes(query.toLowerCase()))
+  const monthly = range === 'Last 6 months' ? [42, 57, 50, 72, 84, 96] : [18, 24, 21, 31]
+  return <div className="app-shell">
+    <aside className="sidebar"><a className="brand" href="#menu" onClick={()=>navigate('menu')}><span className="brand-mark">g<span>↗</span></span>GoodRiddance<span className="brand-period">.</span></a><div className="workspace-label">RESTAURANT WORKSPACE</div><button className="restaurant" onClick={()=>setModal({type:'restaurant'})}><span className="restaurant-avatar">H<span>↗</span></span><span><strong>Harbor & Hearth</strong><small>Brooklyn, New York</small></span><Icon name="down" size={15}/></button><div className="nav-label">MANAGE</div><nav>{[['menu','Menu','menu'],['pickup','Recurring pickup','calendar'],['analytics','Analytics','chart'],['oysters','Oysters','pin']].map(([id,label,icon])=><button key={id} onClick={()=>navigate(id)} className={`nav-item ${page===id?'active':''}`} aria-current={page===id?'page':undefined}><Icon name={icon}/>{label}{id==='menu'&&<span className="nav-count">{items.length}</span>}</button>)}</nav><div className="sidebar-bottom"><div className="planet-card"><span className="planet-icon"><Icon name="leaf" size={23}/></span><strong>Good food. Less waste.</strong><p>A little change in your kitchen.<br/>A big difference out there.</p><button onClick={()=>navigate('analytics')}>See your impact <Icon name="arrow" size={16}/></button></div><button className="help-link" onClick={()=>setModal({type:'help'})}><Icon name="help" size={18}/> Help & resources <Icon name="chevron" size={15}/></button><div className="profile"><span className="avatar">JC</span><span><strong>Jamie Chen</strong><small>Restaurant admin</small></span><span className="online-dot"/></div></div></aside>
+    <div className="main-shell"><header className="topbar"><div>Workspace <Icon name="chevron" size={13}/><strong>{page==='menu'?'Menu':page==='pickup'?'Recurring pickup':page==='oysters'?'Oysters':'Analytics'}</strong></div><div><span className="demo-pill"><span/> Prototype workspace</span><button aria-label="Notifications" className="icon-button" onClick={()=>setModal({type:'notifications'})}><Icon name="bell"/></button><span className="avatar small">JC</span></div></header>
+    <main><div className="page-heading"><div><div className="eyebrow">HARBOR & HEARTH <span>/</span> BROOKLYN, NY</div><h1>{page==='menu'?'Your menu. More possibility.':page==='pickup'?'Good habits, on repeat.':page==='oysters'?'Oysters across Manhattan.':'Small changes. Real impact.'}</h1><p>{page==='menu'?'Serve something great. Give what’s left a second life.':page==='pickup'?'Set a rhythm for your recycling. We’ll help you keep it going.':page==='oysters'?'Restaurants serving oysters on DoorDash. Every shell deserves a second life.':'A clearer picture of what your kitchen can keep out of landfills.'}</p></div>{page==='menu'?<button className="primary-button" onClick={()=>setModal({type:'item', name:'', description:'', price:'', category:'Starters'})}><Icon name="plus" size={18}/> Add menu item</button>:page==='analytics'?<label className="range-select"><Icon name="calendar" size={17}/><select value={range} onChange={e=>setRange(e.target.value)}><option>Last 6 months</option><option>Last 4 weeks</option></select></label>:page==='oysters'?<span className="green-pill"><Icon name="pin" size={16}/> Manhattan, NY</span>:<span className="green-pill"><Icon name="recycle" size={16}/> Built for a better routine</span>}</div>
+    {page==='menu'&&<><section className="opportunity-banner"><div className="banner-icon"><Icon name="leaf" size={29}/></div><div><div className="banner-eyebrow">A FRESH TAKE ON WHAT’S LEFT</div><h2>Your next opportunity is already on the menu.</h2><p>From oyster shells to sourdough scraps, discover the good in what you leave behind.</p></div><button onClick={()=>navigate('pickup')}>Set up a pickup <Icon name="arrow" size={18}/></button><span className="banner-decoration">✳</span></section><div className="menu-toolbar"><div className="tabs">{['All items','Seafood','Starters'].map(cat=><button className={category===cat?'selected':''} key={cat} onClick={()=>setCategory(cat)}>{cat}<span>{cat==='All items'?items.length:items.filter(i=>i.category===cat).length}</span></button>)}</div><label className="search"><Icon name="search" size={17}/><input placeholder="Search your menu" aria-label="Search your menu" value={query} onChange={e=>setQuery(e.target.value)}/>{query&&<button aria-label="Clear search" onClick={()=>setQuery('')}><Icon name="close" size={14}/></button>}</label></div><div className="section-caption"><span>{category} <span className="muted">· {filtered.length} {filtered.length===1?'item':'items'}</span></span><span><span className="status-dot"/> Live menu</span></div><div className="menu-grid">{filtered.map(item=><article className="menu-card" key={item.id}><div className="food-image"><FoodArt type={item.art}/>{item.tag&&<span className="food-tag">{item.tag}</span>}<button className="edit-button" aria-label={`Edit ${item.name}`} onClick={()=>setModal({type:'item',...item})}><Icon name="edit" size={16}/></button></div><div className="item-content"><div className="item-title"><h2>{item.name}</h2><strong>${Number(item.price).toFixed(2)}</strong></div><p>{item.description}</p><div className="item-meta"><span>{item.category}</span><button className="availability" role="switch" aria-checked={item.available} aria-label={`${item.name} availability`} onClick={()=>setItems(items.map(i=>i.id===item.id?{...i,available:!i.available}:i))}><span>{item.available?'Available':'Unavailable'}</span><span className={`toggle ${item.available?'on':''}`}><i/></span></button></div></div><div className="item-opportunity"><div className="opportunity-label"><Icon name="recycle" size={14}/> GoodRiddance OPPORTUNITY <Icon name="arrow" size={15}/></div><strong>{item.opportunity}</strong><p>{item.detail}</p><span className="material-tag"><span/>{item.material}</span></div></article>)}</div>{!filtered.length&&<div className="empty-state"><Icon name="search" size={32}/><h2>No dishes found</h2><p>Try a different name or category.</p><button className="secondary-button" onClick={()=>{setQuery('');setCategory('All items')}}>Show all items</button></div>}<div className="menu-footnote"><Icon name="leaf" size={16}/> Thoughtfully made. Thoughtfully handled. <span>That’s the GoodRiddance way.</span></div></>}
+    {page==='pickup'&&<><section className="pickup-intro"><span className="banner-icon"><Icon name="calendar" size={28}/></span><div><h2>A little planning goes a long way.</h2><p>Choose the days that work for your kitchen. Your schedule is saved on this device.</p></div><span className="sample-label">LOCAL PROTOTYPE</span></section><div className="pickup-layout"><form className="panel schedule-form" onSubmit={saveSchedule}><div className="panel-heading"><h2>Your pickup schedule</h2><span className="step-label">RECURRING COLLECTION</span></div><label>Pickup frequency<select value={schedule.frequency} onChange={e=>setSchedule({...schedule,frequency:e.target.value})}><option>Weekly</option><option>Every other week</option></select></label><fieldset><legend>Pickup days <span>Select one or more</span></legend><div className="day-options">{['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].map(day=><button type="button" aria-pressed={schedule.days.includes(day)} className={schedule.days.includes(day)?'chosen':''} key={day} onClick={()=>setSchedule({...schedule,days:schedule.days.includes(day)?schedule.days.filter(d=>d!==day):[...schedule.days,day]})}>{day.slice(0,3)}{schedule.days.includes(day)&&<Icon name="check" size={12}/>}</button>)}</div></fieldset><div className="form-row"><label>Pickup time<input type="time" required value={schedule.time} onChange={e=>setSchedule({...schedule,time:e.target.value})}/></label><label>Materials<select value={schedule.material} onChange={e=>setSchedule({...schedule,material:e.target.value})}><option>All recyclable materials</option><option>Oyster shells</option><option>Food scraps</option><option>Used cooking oil</option></select></label></div><label>Collection address<input required value={schedule.address} onChange={e=>setSchedule({...schedule,address:e.target.value})}/></label><label>Pickup instructions <span className="optional">Optional</span><textarea rows="3" placeholder="E.g. Bins are by the back entrance. Ring the kitchen bell." value={schedule.instructions} onChange={e=>setSchedule({...schedule,instructions:e.target.value})}/></label><div className="form-actions"><span><Icon name="box" size={16}/> Saved to this browser only</span><button className="primary-button" type="submit">{saved?'Update schedule':'Save schedule'}<Icon name="arrow" size={17}/></button></div>{notice&&<div className={`form-notice ${notice.includes('has been')?'success':''}`} role="status">{notice}</div>}</form><aside className="pickup-summary panel"><span className="summary-icon"><Icon name="recycle" size={30}/></span><div className="eyebrow">YOUR RECYCLING ROUTINE</div><h2>{saved?'You’re on the calendar.':'Make room for good.'}</h2><p>{saved?'Your preferred schedule is saved. Here’s what your routine looks like.':'A consistent pickup makes a cleaner kitchen and a lighter footprint.'}</p><div className="summary-details"><div><Icon name="calendar"/><span><small>{saved?saved.frequency:'Suggested routine'}</small><strong>{(saved?.days || schedule.days).join(' & ') || 'Choose your days'}</strong></span></div><div><Icon name="clock"/><span><small>Collection time</small><strong>{saved?.time || schedule.time} local time</strong></span></div><div><Icon name="pin"/><span><small>Pickup location</small><strong>{saved?.address || schedule.address}</strong></span></div></div><div className="prototype-note"><Icon name="help" size={17}/><p>This prototype saves your preferences locally. No collection is booked or sent to a pickup provider.</p></div></aside></div></>}
+    {page==='analytics'&&<><div className="sample-banner"><Icon name="chart" size={18}/><strong>Sample data</strong><span>These illustrative numbers show what your impact dashboard could look like.</span></div><div className="stats-grid">{[['Waste diverted',range==='Last 6 months'?'401':'94','lbs','18.6','recycle'],['Estimated CO₂ avoided',range==='Last 6 months'?'172':'40','lbs','12.4','leaf'],['Completed pickups',range==='Last 6 months'?'48':'8','','8.2','box']].map(([label,value,unit,change,icon])=><div className="stat-card" key={label}><span>{label}<Icon name={icon} size={20}/></span><strong>{value} <small>{unit}</small></strong><p><b>↗ {change}%</b> vs. previous period · sample</p></div>)}</div><div className="analytics-grid"><section className="panel chart-panel"><div className="panel-heading"><div><h2>A little less waste, every month.</h2><p>Waste diverted from landfill · sample data</p></div><span className="chart-unit">lbs</span></div><div className="bar-chart" role="img" aria-label={`Sample waste diverted: ${monthly.join(', ')} pounds across ${range.toLowerCase()}`}><div className="chart-axis"><span>100</span><span>75</span><span>50</span><span>25</span><span>0</span></div><div className="bars">{monthly.map((value,i)=><div className="bar-column" key={i}><span>{value}</span><div style={{height:`${value*2}px`}} className={i===monthly.length-1?'bar latest':'bar'}/><small>{range==='Last 6 months'?['May','Jun','Jul','Aug','Sep','Oct'][i]:`Week ${i+1}`}</small></div>)}</div></div><div className="chart-legend"><i/> Waste diverted <span>Sample data · {range.toLowerCase()}</span></div></section><section className="panel material-chart"><h2>Good in every material.</h2><p>Diversion by material · sample data</p><div className="donut" role="img" aria-label="Sample material distribution: food scraps 50%, oyster shells 32%, cooking oil 18%"><div><strong>100%</strong><span>second-life potential</span></div></div>{[['Food scraps','50%','#47765c'],['Oyster shells','32%','#a6bea4'],['Cooking oil','18%','#e4c18a']].map(([label,value,color])=><div className="donut-legend" key={label}><i style={{background:color}}/><span>{label}</span><strong>{value}</strong></div>)}</section></div><div className="analytics-note"><Icon name="leaf"/><div><strong>Every shell has a story.</strong><p>Oyster shells can help build new habitat through Billion Oyster Project. Your menu is just the beginning.</p></div><button className="secondary-button" onClick={()=>navigate('menu')}>Explore your menu <Icon name="arrow" size={16}/></button></div></>}
+    {page==='oysters'&&<OysterRestaurants/>}
+    <footer><span>© 2026 GoodRiddance</span><span>Better for your kitchen. Better for our planet. <Icon name="leaf" size={14}/></span></footer></main></div>
+    {modal&&<div className="modal-overlay" onClick={()=>setModal(null)}><section className="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" onClick={e=>e.stopPropagation()}><button className="modal-close icon-button" aria-label="Close dialog" onClick={()=>setModal(null)}><Icon name="close"/></button>{modal.type==='item'?<form onSubmit={e=>{e.preventDefault();if(modal.id)setItems(items.map(i=>i.id===modal.id?{...modal}:i));else setItems([...items,{...modal,id:Date.now(),art:'salad',available:true,opportunity:'Find the good in what’s left',detail:'Collect food scraps for a second life through composting.',material:'Food scraps'}]);setModal(null)}}><div className="eyebrow">YOUR RESTAURANT MENU</div><h2 id="modal-title">{modal.id?'Edit menu item':'Add something delicious'}</h2><label>Item name<input required value={modal.name} onChange={e=>setModal({...modal,name:e.target.value})}/></label><label>Description<textarea required value={modal.description} onChange={e=>setModal({...modal,description:e.target.value})}/></label><div className="form-row"><label>Price ($)<input required type="number" min="0" step="0.01" value={modal.price} onChange={e=>setModal({...modal,price:e.target.value})}/></label><label>Category<select value={modal.category} onChange={e=>setModal({...modal,category:e.target.value})}><option>Seafood</option><option>Starters</option></select></label></div><p className="modal-hint">Menu edits are for this session. Every item includes a GoodRiddance opportunity.</p><button className="primary-button" type="submit">Save menu item <Icon name="check" size={17}/></button></form>:<><span className="summary-icon"><Icon name={modal.type==='notifications'?'bell':modal.type==='help'?'help':'pin'} size={28}/></span><h2 id="modal-title">{modal.type==='notifications'?'You’re all caught up.':modal.type==='help'?'A little help for your kitchen.':'Harbor & Hearth'}</h2><p>{modal.type==='notifications'?'No new notifications in your prototype workspace.':modal.type==='help'?'Explore your menu’s recycling opportunities, set a recurring pickup preference, or view sample impact data. All features in this prototype work locally.':'87 Atlantic Avenue, Brooklyn, NY 11201. This is your sample restaurant workspace.'}</p><button className="secondary-button" onClick={()=>setModal(null)}>Got it</button></>}</section></div>}
+  </div>
 }
-
 export default App
