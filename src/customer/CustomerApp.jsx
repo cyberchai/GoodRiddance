@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Icon from './CxIcon'
 import { CategoryArt, FoodArt } from './Art'
 import { categoryRows, customer, dropOffs, impactHistory, menu, partner, shellReturnFee, stores } from './customerData'
+import { photos } from './customerPhotos'
 import './customer.css'
 
 const storeById = id => stores.find(s => s.id === id)
@@ -59,7 +60,7 @@ function Sheet({ label, onClose, size = '', children }) {
 
 function StoreCard({ store, onOpen, wide }) {
   return <button className={`cx-store-card ${wide ? 'wide' : ''}`} onClick={() => onOpen(store.id)}>
-    <div className="cx-store-img"><FoodArt kind={store.art}/>{store.dashPass && <span className="cx-dp-tag"><Icon name="ticket" size={11} strokeWidth={2.2}/>DashPass</span>}</div>
+    <div className="cx-store-img"><FoodArt kind={store.art} photo={store.photo}/>{store.dashPass && <span className="cx-dp-tag"><Icon name="ticket" size={11} strokeWidth={2.2}/>DashPass</span>}</div>
     <div className="cx-store-meta">
       <strong>{store.name}</strong>
       <span><Stars store={store}/> · {store.distanceMi} mi · {store.etaMin} min</span>
@@ -105,7 +106,7 @@ function Home({ circular, setCircular, onStore, onToast, cartCount, onCart, onBe
         <p>Order from restaurants that recycle their shells into reef-building material.</p>
         <button onClick={() => setCircular(true)}>See restaurants</button>
       </div>
-      <div className="gr-banner-art" aria-hidden="true"><FoodArt kind="oysters"/></div>
+      <div className="gr-banner-art" aria-hidden="true"><FoodArt kind="oysters" photo="west-coast"/></div>
     </section>}
 
     <section className="cx-section">
@@ -135,7 +136,7 @@ function Browse({ onStore }) {
     <div className="cx-search-row"><label className="cx-search"><Icon name="search" size={20} strokeWidth={2.2}/><input autoFocus value={q} onChange={e => setQ(e.target.value)} placeholder="Search stores or dishes" aria-label="Search stores"/></label></div>
     <div className="cx-results">
       {hits.map(s => <button key={s.id} className="cx-result" onClick={() => onStore(s.id)}>
-        <div className="cx-result-img"><FoodArt kind={s.art}/></div>
+        <div className="cx-result-img"><FoodArt kind={s.art} photo={s.photo}/></div>
         <div><strong>{s.name}</strong><span className="cx-muted">{s.cuisine} · {s.distanceMi} mi · {s.etaMin} min</span><span><Stars store={s}/></span>{s.badge && <Badge>Shell recycling partner</Badge>}</div>
       </button>)}
       {hits.length === 0 && <p className="cx-empty">No stores match “{q}”.</p>}
@@ -166,7 +167,7 @@ function BadgeSheet({ store, onClose }) {
 function ItemSheet({ item, onClose, onAdd }) {
   const [qty, setQty] = useState(1)
   return <Sheet label={item.name} onClose={onClose} size="tall">
-    <div className="cx-item-hero"><FoodArt kind={item.art}/></div>
+    <div className="cx-item-hero"><FoodArt kind={item.art} photo={item.photo}/></div>
     <div className="cx-item-body">
       <h2 className="cx-sheet-title">{item.name}</h2>
       <div className="cx-item-price">{money(item.price)}</div>
@@ -187,14 +188,14 @@ function ItemSheet({ item, onClose, onAdd }) {
 
 function Store({ store, onBack, onItem, onBadge, cart, onCheckout }) {
   const items = menu.filter(m => m.storeId === store.id)
-  const sections = [...new Set(items.map(m => m.section))]
+  const sections = ['Raw Bar', 'Soups', 'Mains', 'Sides'].filter(s => items.some(m => m.section === s))
   const inCart = cart.length && itemById(cart[0].id).storeId === store.id
   const count = cart.reduce((s, l) => s + l.qty, 0)
   const subtotal = cart.reduce((s, l) => s + itemById(l.id).price * l.qty, 0)
   return <>
-    <div className="cx-cover"><FoodArt kind={store.art}/><button className="cx-float-btn" aria-label="Back" onClick={onBack}><Icon name="back" size={20} strokeWidth={2.2}/></button></div>
+    <div className="cx-cover"><FoodArt kind={store.art} photo={store.photo}/><button className="cx-float-btn" aria-label="Back" onClick={onBack}><Icon name="back" size={20} strokeWidth={2.2}/></button></div>
     <div className="cx-store-head">
-      <div className="cx-store-logo"><FoodArt kind={store.art}/></div>
+      <div className="cx-store-logo"><FoodArt kind={store.art} photo={store.photo}/></div>
       <h1>{store.name}</h1>
       <div className="cx-store-sub"><Stars store={store}/> · {store.cuisine} · {store.distanceMi} mi</div>
       {store.badge && <Badge onClick={onBadge}>Shell recycling partner</Badge>}
@@ -213,7 +214,7 @@ function Store({ store, onBack, onItem, onBadge, cart, onCheckout }) {
           <span className="cx-muted cx-clamp">{m.desc}</span>
           <span className="cx-menu-price">{money(m.price)}{(m.shellReturn || m.circular) && <span className="gr-flag" title={m.shellReturn ? 'Shells recycled' : 'Made with rescued ingredients'}><Icon name={m.shellReturn ? 'shell' : 'leaf'} size={14} strokeWidth={2}/></span>}{m.popular && <span className="cx-popular">Popular</span>}</span>
         </div>
-        <div className="cx-menu-img"><FoodArt kind={m.art}/><span className="cx-add"><Icon name="plus" size={16} strokeWidth={2.6}/></span></div>
+        <div className="cx-menu-img"><FoodArt kind={m.art} photo={m.photo}/><span className="cx-add"><Icon name="plus" size={16} strokeWidth={2.6}/></span></div>
       </button>)}
     </section>)}
     <div className="cx-bottom-pad"/>
@@ -249,7 +250,7 @@ function Checkout({ cart, setCart, onBack, onPlace }) {
     <section className="cx-co-sec">
       <h2>Order summary</h2>
       {p.lines.map(l => <div className="cx-line" key={l.id}>
-        <div className="cx-line-img"><FoodArt kind={l.item.art}/></div>
+        <div className="cx-line-img"><FoodArt kind={l.item.art} photo={l.item.photo}/></div>
         <div className="cx-line-text"><strong>{l.item.name}</strong><span className="cx-muted">{money(l.item.price * l.qty)}</span></div>
         <div className="cx-stepper sm">
           <button aria-label={`Remove one ${l.item.name}`} onClick={() => changeQty(l.id, -1)}><Icon name="minus" size={14} strokeWidth={2.6}/></button>
@@ -415,7 +416,18 @@ function DropoffScreen({ entry, onBack, onChoose, onToast }) {
 
 /* ---------------- Me + impact ---------------- */
 
-function Me({ onImpact, onReturn, awaiting, onToast, onReset }) {
+function CreditsSheet({ onClose }) {
+  return <Sheet label="Photo credits" onClose={onClose} size="tall-list">
+    <h2 className="cx-sheet-title">Photo credits</h2>
+    <p className="cx-muted">Dish photos are from Wikimedia Commons, used under the licenses below.</p>
+    <ul className="cx-credits">{Object.entries(photos).map(([key, p]) => <li key={key}>
+      <div className="cx-credit-img"><img src={p.src} alt="" loading="lazy"/></div>
+      <div><a href={p.page} target="_blank" rel="noreferrer">{decodeURIComponent(p.page.split('File:')[1]).replace(/_/g, ' ')}</a><span className="cx-muted">{p.author || 'Unknown author'} · {p.license}</span></div>
+    </li>)}</ul>
+  </Sheet>
+}
+
+function Me({ onImpact, onReturn, awaiting, onToast, onReset, onCredits }) {
   const rows = [['receipt', 'Orders'], ['card', 'Payment'], ['pin', 'Addresses'], ['gift', 'Gift cards'], ['help', 'Help']]
   return <>
     <header className="cx-page-head"><h1>Account</h1></header>
@@ -425,7 +437,7 @@ function Me({ onImpact, onReturn, awaiting, onToast, onReset }) {
       <button className="cx-me-row gr-me-row" onClick={onImpact}><span className="gr-me-icon"><Icon name="leaf" size={18}/></span><span>My impact</span><Icon name="chev" size={18}/></button>
       {rows.map(([icon, label]) => <button key={label} className="cx-me-row" onClick={() => onToast(`${label} is not part of this prototype`)}><Icon name={icon} size={20}/><span>{label}</span><Icon name="chev" size={18}/></button>)}
     </div>
-    <button className="cx-reset" onClick={onReset}>Reset demo data</button>
+    <div className="cx-me-links"><button className="cx-reset" onClick={onCredits}>Photo credits</button><button className="cx-reset" onClick={onReset}>Reset demo data</button></div>
   </>
 }
 
@@ -549,7 +561,7 @@ export default function CustomerApp() {
     case 'return': body = <ReturnScreen entry={awaiting} onBack={back} onChoose={chooseReturn} onDropoff={() => go({ name: 'dropoff' })} onSimulate={simulateReturn}/>; break
     case 'dropoff': body = <DropoffScreen entry={awaiting} onBack={back} onChoose={m => { chooseReturn(m); back() }} onToast={setToast}/>; break
     case 'browse': body = <Browse onStore={id => go({ name: 'store', id })}/>; break
-    case 'me': body = <Me onImpact={() => go({ name: 'impact' })} onReturn={() => go({ name: 'return' })} awaiting={awaiting} onToast={setToast} onReset={reset}/>; break
+    case 'me': body = <Me onImpact={() => go({ name: 'impact' })} onReturn={() => go({ name: 'return' })} awaiting={awaiting} onToast={setToast} onReset={reset} onCredits={() => setSheet({ type: 'credits' })}/>; break
     case 'impact': body = <Impact history={history} onBack={back}/>; break
     default: body = <Home circular={circular} setCircular={setCircular} onStore={id => go({ name: 'store', id })} onToast={setToast} cartCount={cartCount}
       onCart={() => go({ name: 'checkout' })} hasNotice={notice} onBell={() => awaiting ? go({ name: 'return' }) : setToast('No new notifications')}/>
@@ -578,6 +590,7 @@ export default function CustomerApp() {
         {sheet?.type === 'badge' && <BadgeSheet store={storeById(sheet.id)} onClose={() => setSheet(null)}/>}
         {sheet?.type === 'item' && <ItemSheet item={itemById(sheet.id)} onClose={() => setSheet(null)} onAdd={addToCart}/>}
         {sheet?.type === 'how' && <HowSheet onClose={() => setSheet(null)}/>}
+        {sheet?.type === 'credits' && <CreditsSheet onClose={() => setSheet(null)}/>}
         {toast && <div className={`cx-toast ${showNav ? 'above-nav' : ''}`} role="status">{toast}</div>}
         <div className="cx-home-indicator"/>
       </div>

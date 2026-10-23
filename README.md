@@ -67,7 +67,9 @@ npm run dev      # then open http://localhost:5173/customer
   Shell weights are rough estimates and are labeled that way in the app.
 - `src/customer/customer.css` — styles. `cx-` classes are the core app; `gr-` classes are
   the new Good Riddance parts.
-- `src/customer/Art.jsx`, `src/customer/CxIcon.jsx` — drawn food placeholders and icons.
+- `src/customer/customerPhotos.js` — dish photos from Wikimedia Commons with author and license;
+  credited in the app under **Me → Photo credits**.
+- `src/customer/Art.jsx`, `src/customer/CxIcon.jsx` — photo slots (with drawn fallbacks) and icons.
 
 ### Demo path
 

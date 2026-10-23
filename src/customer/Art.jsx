@@ -1,4 +1,6 @@
-// Flat drawn placeholders for food photos and category icons. No photos or brand assets.
+// Dish images (real photos with drawn fallbacks) and drawn category icons. No brand assets.
+import { useState } from 'react'
+import { photos } from './customerPhotos'
 
 const plates = {
   oysters: '#d9e3e1', clams: '#e6e0d3', chowder: '#efe3cf', bisque: '#f1ddd0', fish: '#eadfc8',
@@ -59,7 +61,11 @@ function Dish({ kind }) {
   }
 }
 
-export function FoodArt({ kind, className = '' }) {
+// A real dish photo when one is listed in customerPhotos.js; the drawing if not, or if it fails to load.
+export function FoodArt({ kind, photo, className = '' }) {
+  const [failed, setFailed] = useState(false)
+  const pic = photo && photos[photo]
+  if (pic && !failed) return <img className={`cx-food-art cx-photo ${className}`} src={pic.src} alt="" loading="lazy" onError={() => setFailed(true)}/>
   return <svg className={`cx-food-art ${className}`} viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" role="img" aria-label={`${kind} placeholder`}>
     <rect width="160" height="100" fill={plates[kind] || '#eee'}/>
     <ellipse cx="80" cy="52" rx="48" ry="40" fill="#fbfaf6" opacity=".9"/>
