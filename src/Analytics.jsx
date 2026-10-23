@@ -72,8 +72,8 @@ export default function Analytics({ schedule }) {
           note={`About ${shells.toLocaleString()} shells`} />
         <Stat label="Kept out of the landfill" value={totalLb / lbPerTrashBag} format={(n) => `${formatCount(n)} trash bags`}
           note={`About ${(totalLb / 2000).toFixed(1)} tons, at ~${lbPerTrashBag} lb per full bag`} />
-        <Stat label="Baby oyster homes" value={shells * oystersPerShell[0]} format={(n) => `${formatCount(n)}+`}
-          note={`Baby oysters grow on old shells. Each of yours can hold ${oystersPerShell.join('–')} on a new reef.`} />
+        <Stat label="New homes for baby oysters" value={shells * oystersPerShell[0]} format={(n) => `${formatCount(n)}+`}
+          note={`Your used shells go back into New York Harbor. Baby oysters attach to them and grow, ${oystersPerShell.join('–')} per shell.`} />
         <Stat label="Pickups completed" value={pickups} format={formatCount} href="#pickups"
           note={`${dasherPickups} by Dashers${nextPickup ? ` · next ${formatDate(nextPickup)}` : ''}`} />
       </div>
