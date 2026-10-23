@@ -4,12 +4,17 @@ import './index.css'
 import ViewSwitch from './ViewSwitch.jsx'
 
 // /customer opens the customer-side prototype; everything else is the restaurant workspace.
-const isCustomer = location.pathname.startsWith('/customer')
-const load = isCustomer ? import('./customer/CustomerApp.jsx') : import('./App.jsx')
+// One loader per view: written as a single `a ? import(x) : import(y)`, the minifier merged
+// the two loads and dropped the customer stylesheet.
+const loaders = {
+  customer: () => import('./customer/CustomerApp.jsx'),
+  restaurant: () => import('./App.jsx'),
+}
+const view = location.pathname.startsWith('/customer') ? 'customer' : 'restaurant'
 
-load.then(({ default: Root }) => createRoot(document.getElementById('root')).render(
+loaders[view]().then(({ default: Root }) => createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Root />
-    <ViewSwitch current={isCustomer ? 'customer' : 'restaurant'} />
+    <ViewSwitch current={view} />
   </StrictMode>,
 ))
