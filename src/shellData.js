@@ -1,18 +1,37 @@
 // Mock data for the oyster-shell workflow. Restaurant numbers are sample
 // estimates; Billion Oyster Project facts are from billionoysterproject.org.
 
+// The restaurant's menu. `shellsPerWeek` (sample) marks the items whose shells go to BOP.
+export const menuCategories = ['Raw bar', 'Starters', 'Mains', 'Sides', 'Drinks']
+export const menu = [
+  { id: 'east-coast', category: 'Raw bar', name: 'East Coast Oysters', detail: 'Half dozen · cucumber mignonette, lemon', price: 24, shellsPerWeek: 720 },
+  { id: 'west-coast', category: 'Raw bar', name: 'West Coast Oysters', detail: 'Half dozen · shallot vinegar', price: 26, shellsPerWeek: 300 },
+  { id: 'platter', category: 'Raw bar', name: 'Oyster Platter', detail: 'A dozen, chef’s selection', price: 45, shellsPerWeek: 230 },
+  { id: 'shrimp', category: 'Raw bar', name: 'Shrimp Cocktail', detail: 'Five jumbo shrimp · cocktail sauce', price: 19 },
+  { id: 'rockefeller', category: 'Starters', name: 'Oysters Rockefeller', detail: 'Six baked oysters · spinach, parmesan', price: 26, shellsPerWeek: 150 },
+  { id: 'calamari', category: 'Starters', name: 'Crispy Calamari', detail: 'Cherry peppers, lemon aioli', price: 18 },
+  { id: 'little-gem', category: 'Starters', name: 'Little Gem Salad', detail: 'Parmesan, green goddess', price: 14 },
+  { id: 'salmon', category: 'Mains', name: 'Grilled Atlantic Salmon', detail: 'Herb potatoes, lemon butter', price: 32 },
+  { id: 'lobster-roll', category: 'Mains', name: 'Lobster Roll', detail: 'Brown-butter brioche, fries', price: 34 },
+  { id: 'fish-chips', category: 'Mains', name: 'Fish & Chips', detail: 'Beer-battered cod, tartar sauce', price: 27 },
+  { id: 'fries', category: 'Sides', name: 'Fries', detail: 'Old Bay salt', price: 8 },
+  { id: 'broccolini', category: 'Sides', name: 'Charred Broccolini', detail: 'Chili, garlic', price: 10 },
+  { id: 'muscadet', category: 'Drinks', name: 'Muscadet', detail: 'Glass', price: 14 },
+  { id: 'lager', category: 'Drinks', name: 'Draft Lager', detail: '16 oz', price: 9 },
+]
+export const oysterItems = menu.filter((item) => item.shellsPerWeek)
+
 export const restaurant = {
   name: 'Harbor & Hearth',
   street: '87 Atlantic Avenue',
   city: 'Brooklyn',
   state: 'NY',
   zip: '11201',
+  lat: 40.6912,
+  lng: -73.9973,
   manager: 'Restaurant Owner',
-  oystersPerWeek: 1400,
-  oysterItems: [
-    { name: 'East Coast Oysters', detail: 'Half dozen · cucumber mignonette, lemon', price: 24 },
-    { name: 'Oysters Rockefeller', detail: 'Six baked oysters · spinach, parmesan', price: 26 },
-  ],
+  role: 'Restaurant manager',
+  oystersPerWeek: oysterItems.reduce((sum, item) => sum + item.shellsPerWeek, 0),
 }
 
 export const lbPerShell = 0.15 // sample: weight of one oyster's two shell halves
@@ -22,7 +41,7 @@ export const bop = {
   name: 'Billion Oyster Project',
   dropoff: 'BOP shell transfer station, Fulton Fish Market Co-op, Hunts Point',
   curing: 'Governors Island',
-  url:'https://www.billionoysterproject.org/restaurants',
+  url: 'https://www.billionoysterproject.org/restaurants',
 }
 
 export const journey = [
@@ -132,3 +151,19 @@ const samplePickups = [
 ]
 export const pickupHistory = scheduledDates(defaultSchedule.days, samplePickups.length, -1)
   .map((date, i) => ({ date, ...samplePickups[i], receipt: `GR-${date.replaceAll('-', '')}` }))
+
+// Monday of the week `weeksAgo` weeks before this one.
+function weekStart(weeksAgo) {
+  const daysSinceMonday = (new Date().getDay() + 6) % 7
+  return daysAgo(daysSinceMonday + 7 * weeksAgo)
+}
+
+// Sample totals for the last 12 full weeks, oldest first: pounds weighed at BOP's
+// transfer station and how many of the week's three pickups a Dasher made.
+const sampleWeeks = [
+  { lb: 188, dasher: 0 }, { lb: 196, dasher: 0 }, { lb: 201, dasher: 1 }, { lb: 192, dasher: 0 },
+  { lb: 207, dasher: 0 }, { lb: 214, dasher: 0 }, { lb: 199, dasher: 0 }, { lb: 210, dasher: 1 },
+  { lb: 218, dasher: 0 }, { lb: 205, dasher: 0 }, { lb: 211, dasher: 0 }, { lb: 213, dasher: 1 },
+]
+export const dasherLbPerPickup = 34 // sample: a Dasher carries buckets, not full bins
+export const weeklyShells = sampleWeeks.map((week, i) => ({ ...week, pickups: 3, weekOf: weekStart(sampleWeeks.length - i) }))

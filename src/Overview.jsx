@@ -1,5 +1,5 @@
 import Icon from './Icon'
-import { bop, carriers, daysAgo, formatDate, journey, lbPerShell, oystersPerShell, pickupHistory, restaurant, upcomingPickups } from './shellData'
+import { bop, carriers, daysAgo, formatDate, journey, lbPerShell, oysterItems, oystersPerShell, pickupHistory, restaurant, upcomingPickups } from './shellData'
 
 export default function Overview({ schedule, pendingGrants }) {
   const [next] = upcomingPickups(schedule.days, 1)
@@ -45,12 +45,12 @@ export default function Overview({ schedule, pendingGrants }) {
       <section className="card">
         <div className="card-heading">
           <h2>Oysters on your menu</h2>
-          <span className="muted">From your DoorDash menu</span>
+          <a className="text-link" href="#menu">Open menu <Icon name="arrow" size={13} /></a>
         </div>
         <ul className="menu-list">
-          {restaurant.oysterItems.map((item) => (
-            <li key={item.name}>
-              <span><strong>{item.name}</strong><small>{item.detail}</small></span>
+          {oysterItems.map((item) => (
+            <li key={item.id}>
+              <span><strong>{item.name}</strong><small>{item.detail} · about {item.shellsPerWeek.toLocaleString()} shells a week</small></span>
               <span className="price">${item.price.toFixed(2)}</span>
             </li>
           ))}
