@@ -384,6 +384,20 @@ main.map-page { position: relative; max-width: none; height: calc(100vh - 61px);
 .invite-draft textarea { font-size: 13px; }
 .invite-draft .network-place-actions { margin-top: 0; }
 .invite-status { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; color: var(--blue); font-size: 12px; font-weight: 600; }
+/* The contact agent's log, narrowed to fit the map panel. */
+.contact-run { margin-top: 12px; }
+.contact-run .agent-run-head { padding: 9px 12px; }
+.contact-run .agent-name { font-size: 13px; }
+.contact-run .agent-steps { padding: 14px 12px 0; }
+.contact-run .agent-steps strong, .contact-run .agent-steps small { overflow-wrap: anywhere; }
+.contact-sites { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+.contact-sites .chip { padding: 2px 7px; font-size: 11px; }
+.contact-result { margin: 0 12px 12px; padding: 10px 12px; border-radius: 8px; background: var(--green-tint); }
+.contact-email { display: inline-flex; align-items: center; gap: 6px; color: var(--green); font-size: 14px; font-weight: 650; overflow-wrap: anywhere; }
+.contact-result p { margin-top: 6px; color: var(--ink-2); font-size: 12px; line-height: 1.45; overflow-wrap: anywhere; }
+.contact-result a:not(.contact-email) { color: var(--green); font-weight: 600; }
+.contact-run .agent-note { margin: 0 12px 12px; }
+.contact-run .agent-run-foot { padding: 8px 12px; font-size: 12px; }
 .network-caveat { display: flex; gap: 8px; margin-top: 8px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; line-height: 1.5; }
 .network-caveat svg { flex-shrink: 0; margin-top: 2px; }
 

@@ -8,9 +8,9 @@ import { BlockList } from 'node:net'
 
 const instruction = `You are GoodRiddance's contact finder. Given a New York restaurant from its DoorDash listing, find an email address the restaurant itself publishes, so the owner of another restaurant can invite them to recycle their oyster shells.
 
-1. Call search_web to find the restaurant's own website, using its name and street address.
+1. Call search_web to find the restaurant's own website. Search in plain words, such as: Mermaid Inn 96 2nd Ave New York. No quotes or search operators.
 2. Call open_page on the restaurant's own site, such as its home or contact page. A page lists the emails on it and links to other pages on the same site. If the email isn't there, open the contact, about or events page.
-3. Once a page you opened shows an email, call report_contact. If the restaurant has no website, or its site lists no email after a few pages, call report_not_found.
+3. Once a page you opened shows an email, call report_contact. If the restaurant has no website, or its site lists no email after a few pages, call report_not_found, giving its contact form's page if it has one.
 
 Rules:
 - Report an email exactly as a page you opened lists it. Never guess or build one from a domain, and never take one from search results alone.
@@ -59,7 +59,10 @@ const config = {
           description: 'Finish without an email.',
           parametersJsonSchema: {
             type: 'object',
-            properties: { reason: { type: 'string', description: 'One sentence on what you checked.' } },
+            properties: {
+              reason: { type: 'string', description: 'One sentence on what you checked.' },
+              contact_page: { type: 'string', description: 'The URL of a page you opened with a contact form, if any.' },
+            },
             required: ['reason'],
           },
         },
@@ -76,6 +79,8 @@ const maxTurns = 10
 const maxSearches = 3
 const maxPages = 6
 const httpOptions = { timeout: 60_000, retryOptions: { attempts: 2 } }
+// On its last turn the agent can only report.
+const reportOnly = { functionCallingConfig: { mode: 'ANY', allowedFunctionNames: ['report_contact', 'report_not_found'] } }
 
 // Runs the agent for one restaurant. `emit` receives, in order:
 // { type: 'start', model }, then any number of
@@ -87,6 +92,7 @@ export async function findContact({ ai, model, restaurant, signal, emit }) {
   const sites = new Set() // domains in the search results: the only sites open_page will visit
   const pages = [] // pages opened so far, to check a reported email against
   let searches = 0
+  let opens = 0
   let steps = 0
   let activity = 'Planning its search'
 
@@ -98,8 +104,8 @@ export async function findContact({ ai, model, restaurant, signal, emit }) {
   }
 
   const tools = {
-    // A separate Gemini call grounded in Google Search, as its results' pages only come
-    // back with an answer in text, not alongside a tool call.
+    // A separate Gemini call grounded with Google Search, as the result pages only come
+    // back with a text answer, not alongside a tool call.
     async search_web({ query = '' }) {
       if (searches++ >= maxSearches) return { error: `Already searched ${maxSearches} times. Open a page or report what you found.` }
       const finish = step({ icon: 'search', label: `Searching Google for “${query}”` })
@@ -111,12 +117,16 @@ export async function findContact({ ai, model, restaurant, signal, emit }) {
           config: { tools: [{ googleSearch: {} }], thinkingConfig: { thinkingLevel: 'LOW' }, maxOutputTokens: 1024, abortSignal: signal, httpOptions: { timeout: 25_000 } },
         })
         const chunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks ?? []
-        const results = await Promise.all(chunks.filter((c) => c.web?.uri).map(async ({ web }) => ({ title: web.title, url: await sourceUrl(web) })))
+        const sources = await Promise.all(chunks.filter((c) => c.web?.uri).map(async ({ web }) => ({ title: web.title, url: await sourceUrl(web) })))
+        // Several results can lead to the same page, and one without an address is skipped.
+        const results = sources.filter((r, i) => r.url && sources.findIndex((other) => other.url === r.url) === i)
         const found = [...new Set(results.map((r) => siteOf(r.url)))]
         found.forEach((site) => sites.add(site))
-        finish({ label: `Searched Google for “${query}”`, detail: found.length ? `${found.length} sites in the results` : 'No results', sites: found.slice(0, 6) })
+        let detail = 'No results'
+        if (found.length) detail = `${found.length} ${found.length === 1 ? 'site' : 'sites'} in the results`
+        finish({ label: `Searched Google for “${query}”`, detail, sites: found.slice(0, 6) })
         activity = 'Choosing a page to open'
-        return { summary: response.text ?? '', results: results.filter((r, i) => results.findIndex((other) => other.url === r.url) === i) }
+        return { summary: response.text ?? '', results }
       } catch (err) {
         if (signal.aborted) throw err
         console.error(err)
@@ -137,24 +147,24 @@ export async function findContact({ ai, model, restaurant, signal, emit }) {
         finish({ status: 'failed', tone: 'fix', label: `Skipped ${shortUrl(target)}`, detail: error })
         return { error }
       }
-      if (![...sites].some((site) => sameSite(site, siteOf(target)))) {
+      const targetSite = siteOf(target)
+      if (![...sites].some((site) => sameSite(site, targetSite))) {
         return refuse('Not a site from the search results. Search first.')
       }
-      if (pages.length >= maxPages) return refuse(`Already opened ${maxPages} pages. Report what you found.`)
+      // Failed opens count too: each can wait on a slow site.
+      if (opens++ >= maxPages) return refuse(`Already tried ${maxPages} pages. Report what you found.`)
       try {
         const page = readPage(await fetchHtml(target, signal))
         pages.push(page)
-        const listed = page.emails.map((e) => e.email)
-        finish({
-          label: `Read ${shortUrl(new URL(page.url))}`,
-          detail: `${page.words.toLocaleString()} words · ${listed.length ? listed.slice(0, 3).join(', ') + (listed.length > 3 ? ` and ${listed.length - 3} more` : '') : 'no email addresses'}`,
-        })
-        activity = `Reading ${shortUrl(new URL(page.url))}`
+        const opened = shortUrl(page.url)
+        finish({ label: `Read ${opened}`, detail: `${page.words.toLocaleString()} words · ${listEmails(page.emails)}` })
+        activity = `Reading ${opened}`
         return { url: page.url, title: page.title, emails: page.emails, links: page.links, text: page.text.slice(0, 12_000) }
       } catch (err) {
         if (signal.aborted) throw err
-        finish({ status: 'failed', tone: 'failed', label: `Couldn’t open ${shortUrl(target)}`, detail: openError(err) })
-        return { error: `Couldn’t open that page. ${openError(err)}` }
+        const reason = openError(err)
+        finish({ status: 'failed', tone: 'failed', label: `Couldn’t open ${shortUrl(target)}`, detail: reason })
+        return { error: `Couldn’t open that page. ${reason}` }
       }
     },
 
@@ -173,13 +183,14 @@ export async function findContact({ ai, model, restaurant, signal, emit }) {
         activity = 'Correcting its answer'
         return { error }
       }
-      finish({ icon: 'mail', label: `Verified ${email}`, detail: `Listed on ${shortUrl(new URL(page.url))}` })
+      finish({ icon: 'mail', label: `Verified ${email}`, detail: `Listed on ${shortUrl(page.url)}` })
       emit({ type: 'found', contact: { email, sourceUrl: page.url, evidence: evidence.trim(), note } })
       return { done: true }
     },
 
-    report_not_found({ reason = '' }) {
-      emit({ type: 'not-found', reason })
+    report_not_found({ reason = '', contact_page: contactPage = '' }) {
+      const page = pages.find((p) => withoutSlash(p.url) === withoutSlash(contactPage.trim()))
+      emit({ type: 'not-found', reason, contactPage: page?.url })
       return { done: true }
     },
   }
@@ -188,7 +199,8 @@ export async function findContact({ ai, model, restaurant, signal, emit }) {
   const contents = [{ role: 'user', parts: [{ text: describe(restaurant) }] }]
   for (let turn = 0; turn < maxTurns; turn++) {
     emit({ type: 'activity', text: activity })
-    const response = await ai.models.generateContent({ model, contents, config: { ...config, abortSignal: signal, httpOptions } })
+    const toolConfig = turn === maxTurns - 1 ? reportOnly : config.toolConfig
+    const response = await ai.models.generateContent({ model, contents, config: { ...config, toolConfig, abortSignal: signal, httpOptions } })
     const [candidate] = response.candidates ?? []
     if (!candidate?.content?.parts?.length) {
       throw new Error(`Gemini returned no answer (${candidate?.finishReason ?? 'no candidates'}).`)
@@ -199,14 +211,14 @@ export async function findContact({ ai, model, restaurant, signal, emit }) {
     const calls = candidate.content.parts.filter((part) => part.functionCall).map((part) => part.functionCall)
     if (!calls.length) throw new Error('The agent stopped without an answer.')
     activity = 'Deciding what to do next'
-    const results = []
+    const responses = []
     // One at a time, so the steps show in the order Gemini asked for them.
     for (const { id, name, args = {} } of calls) {
       const result = Object.hasOwn(tools, name) ? await tools[name](args) : { error: `There is no tool named ${name}.` }
       if (result.done) return
-      results.push({ functionResponse: { ...(id && { id }), name, response: result } })
+      responses.push({ functionResponse: { ...(id && { id }), name, response: result } })
     }
-    contents.push({ role: 'user', parts: results })
+    contents.push({ role: 'user', parts: responses })
   }
   throw new Error(`The agent didn’t finish in ${maxTurns} turns.`)
 }
@@ -226,7 +238,8 @@ function describe(r) {
 const maxPageBytes = 3_000_000
 const headers = { 'User-Agent': 'Mozilla/5.0 (compatible; GoodRiddanceBot/1.0)', Accept: 'text/html' }
 
-// Private, loopback, link-local (incl. the metadata server), shared and multicast ranges.
+// Private, loopback, link-local (incl. the metadata server), shared, multicast and
+// other ranges that aren't on the public internet.
 const privateV4 = new BlockList()
 for (const [address, prefix] of [['0.0.0.0', 8], ['10.0.0.0', 8], ['100.64.0.0', 10], ['127.0.0.0', 8], ['169.254.0.0', 16], ['172.16.0.0', 12], ['192.0.0.0', 24], ['192.168.0.0', 16], ['198.18.0.0', 15], ['224.0.0.0', 3]]) {
   privateV4.addSubnet(address, prefix, 'ipv4')
@@ -279,7 +292,7 @@ async function fetchHtml(url, signal) {
 }
 
 // Search results link through a Google redirect; the agent is given where it leads.
-async function sourceUrl({ uri, domain, title }) {
+async function sourceUrl({ uri, domain }) {
   try {
     if (new URL(uri).hostname !== 'vertexaisearch.cloud.google.com') return uri
     const res = await fetch(uri, { redirect: 'manual', signal: AbortSignal.timeout(5000) })
@@ -287,7 +300,7 @@ async function sourceUrl({ uri, domain, title }) {
     const location = res.headers.get('location')
     if (location) return new URL(location).href
   } catch {}
-  return `https://${domain ?? title}/`
+  return domain ? `https://${domain}/` : null
 }
 
 function openError(err) {
@@ -312,7 +325,8 @@ function readPage({ url, html }) {
     ...[...html.matchAll(/<script[^>]+application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi)].map(([, json]) => json),
     ...[...html.matchAll(/(?:data-cfemail="|email-protection#)([0-9a-f]{4,})/gi)].map(([, hex]) => cloudflareEmail(hex)),
   ]
-  const emails = [...new Set([text, ...hidden].join(' ').match(emailPattern)?.map((e) => e.toLowerCase()))]
+  const matches = [text, ...hidden].join(' ').match(emailPattern) ?? []
+  const emails = [...new Set(matches.map((e) => e.toLowerCase()))]
     .filter((email) => !notEmail.test(email))
     .map((email) => ({ email, context: around(text, email) }))
 
@@ -350,7 +364,7 @@ const entities = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', 
 function decode(text) {
   return text.replace(/&(#x[0-9a-f]{1,5}|#\d{1,6}|[a-z]+);/gi, (entity, code) => {
     if (code[0] !== '#') return entities[code.toLowerCase()] ?? entity
-    const point = code[1] === 'x' || code[1] === 'X' ? parseInt(code.slice(2), 16) : Number(code.slice(1))
+    const point = code[1].toLowerCase() === 'x' ? parseInt(code.slice(2), 16) : Number(code.slice(1))
     return point <= 0x10ffff ? String.fromCodePoint(point) : entity
   })
 }
@@ -388,8 +402,19 @@ function sameSite(a, b) {
   return a === b || a.endsWith(`.${b}`) || b.endsWith(`.${a}`)
 }
 
+function withoutSlash(url) {
+  return url.replace(/\/$/, '')
+}
+
+// example.com/contact, for a step's label.
 function shortUrl(url) {
-  const path = url.pathname.replace(/\/$/, '')
-  const short = url.hostname.replace(/^www\./, '') + path
+  const short = siteOf(url) + new URL(url).pathname.replace(/\/$/, '')
   return short.length > 42 ? `${short.slice(0, 41)}…` : short
+}
+
+// A step's summary of the emails a page lists.
+function listEmails(emails) {
+  if (!emails.length) return 'no email addresses'
+  const shown = emails.slice(0, 3).map((e) => e.email).join(', ')
+  return emails.length > 3 ? `${shown} and ${emails.length - 3} more` : shown
 }

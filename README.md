@@ -28,8 +28,9 @@ A **Restaurant view | Customer view** switch in the bottom-right corner jumps be
 - **Firestore** (`ruthai26nyc-2612`, `us-east4`) — where the data lives. `npm run seed`
   loads the JSON into the `restaurants` collection and the `meta/oysterDataset` doc.
 - `server/index.js` — Express server on **Cloud Run** that serves the built React app,
-  `GET /api/restaurants` from Firestore, and `POST /api/agent/:name`, one Gemini turn for an
-  agent defined in `server/agents.js`.
+  `GET /api/restaurants` from Firestore, `POST /api/agent/:name`, one Gemini turn for an
+  agent defined in `server/agents.js`, and `POST /api/find-contact/:id`, which runs the
+  contact agent (`server/contactAgent.js`) and streams its steps.
 - `src/` — the merchant portal: Menu, Pickups, Grants, NYC network and GoodRiddance pages. Mock
   data lives in `src/shellData.js` (restaurant, pickups, BOP facts) and `src/opportunities.js`
   (grants and press, their application forms and sample eligibility rules). NYC network reads
@@ -47,6 +48,12 @@ A **Restaurant view | Customer view** switch in the bottom-right corner jumps be
   labelled as recorded (`src/agentRecordings.js`).
 - **NYC network** (`invite`): "Invite to recycle" writes an email to that restaurant from its
   DoorDash menu and Harbor & Hearth's results.
+- **NYC network** (contact agent): "Find their email" searches Google for the restaurant's own
+  site, opens its pages and reports an email it lists, which the invite is then addressed to.
+  This one runs on the server, which streams each search and page to the browser as it
+  happens. An email only counts if it appears on a page the agent opened, next to text
+  quoted from that site, such as the street address. It only opens public https sites that came up in
+  its searches.
 
 The server calls Gemini on Vertex AI as Cloud Run's service account, so no API key is needed.
 The model is `gemini-3.8-flash` unless `GEMINI_MODEL` is set. The server holds each agent's
