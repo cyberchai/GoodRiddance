@@ -22,26 +22,6 @@
           "section": "Appetizers"
         }
       ]
-    },
-    {
-      "id": "24417508",
-      "name": "Pesce Lulu Seafood Kitchen",
-      "street": "601 Lexington Ave",
-      "neighborhood": null,
-      "lat": 40.7583358,
-      "lng": -73.9699153,
-      "rating": 4.6,
-      "ratingCount": 44,
-      "doordashUrl": "https://www.doordash.com/store/24417508/",
-      "fetchedAt": "2026-10-23T18:39:03.471Z",
-      "oysterItems": [
-        {
-          "name": "fisherman’s soup (contains fish)",
-          "description": "classic manhattan style tomato base chowder : caramelized onions : carrots : celery : san marazano tomatoes : spices : mahi mahi : salmon : cod : herbs + spices + oyster crackers.",
-          "price": 7.15,
-          "section": "Vegetarian Sides"
-        }
-      ]
     }
   ],
   "checkedWithoutOysters": [
@@ -80,6 +60,12 @@
       "name": "Sushi 35 West",
       "street": null,
       "doordashUrl": "https://www.doordash.com/store/1721744/"
+    },
+    {
+      "id": "24417508",
+      "name": "Pesce Lulu Seafood Kitchen",
+      "street": "601 Lexington Ave",
+      "doordashUrl": "https://www.doordash.com/store/24417508/"
     }
   ]
 }

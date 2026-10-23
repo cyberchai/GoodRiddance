@@ -16,8 +16,8 @@ const searchLimit = 8
 // dd-cli asks every call for the goal behind it.
 const intent = `Summary: Help a prototype for NYC restaurants find Manhattan restaurants that serve oysters, so they can be invited to recycle their shells with Billion Oyster Project
 user prompt/purpose: "refresh the restaurant data with dd-cli instead, but make sure automatic fallback to mock data if dd-cli fails."`
-// Oysters, but not oyster sauce or oyster mushrooms.
-const oysterPattern = /\boysters?\b(?!\s+(sauce|mushrooms?))/i
+// Oysters, but not oyster sauce, oyster mushrooms or oyster crackers.
+const oysterPattern = /\boysters?\b(?!\s+(sauce|mushrooms?|crackers?))/i
 // Exit codes after which every later call fails too: signed out, not enabled, rate limited or unreachable.
 const fatalExitCodes = new Set([3, 4, 5])
 
