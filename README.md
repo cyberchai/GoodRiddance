@@ -19,7 +19,11 @@ A **Restaurant view | Customer view** switch in the bottom-right corner jumps be
 
 ## How it fits together
 
-- `data/oyster-restaurants.json` — the dataset, scraped from public DoorDash store pages.
+- `data/oyster-restaurants.json` — the dataset. `npm run refresh` rebuilds it from DoorDash
+  with the DoorDash CLI, `dd-cli` (run `dd-cli login` once first), and caches each
+  successful fetch in `data/dd-cli-cache.json`. If dd-cli is missing, signed out, rate
+  limited or finds no oyster restaurants, it reuses that cache, or copies
+  `data/mock-restaurants.json` when there is none and the NYC network page says "Mock data".
 - **Firestore** (`ruthai26nyc-2612`, `us-east4`) — where the data lives. `npm run seed`
   loads the JSON into the `restaurants` collection and the `meta/oysterDataset` doc.
 - `server/index.js` — Express server on **Cloud Run** that serves the built React app and
@@ -85,6 +89,7 @@ Teal (`#1C6C74`) marks every Good Riddance element; the rest of the UI is the co
 
 ```bash
 npm run dev      # local app; /api is proxied to the deployed service
+npm run refresh  # rebuild data/oyster-restaurants.json with dd-cli (mock data if it fails)
 npm run seed     # push data/oyster-restaurants.json to Firestore
 npm run deploy   # build and deploy to Cloud Run
 ```

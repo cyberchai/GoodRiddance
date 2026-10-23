@@ -1,0 +1,1301 @@
+{
+  "title": "Manhattan restaurants with oysters on DoorDash",
+  "source": "Mock data: a saved snapshot of public DoorDash store pages from 2026-10-23",
+  "mock": true,
+  "restaurants": [
+    {
+      "id": "crave-fishbar-1837929",
+      "name": "Crave Fishbar",
+      "street": "428 Amsterdam Avenue",
+      "neighborhood": "Upper West Side",
+      "lat": 40.784233,
+      "lng": -73.97769,
+      "rating": 4.6,
+      "ratingCount": "50",
+      "priceRange": "$$",
+      "doordashUrl": "https://www.doordash.com/store/crave-fishbar-new-york-1837929/112471546/",
+      "scrapedAt": "2026-10-23T16:41:49.695Z",
+      "oysterItems": [
+        {
+          "name": "East Coast Oyster",
+          "description": "half dozen freshly shucked east coast served with lemon, packed over ice (gf)",
+          "price": 19,
+          "section": "Most Ordered"
+        }
+      ],
+      "menu": [
+        {
+          "section": "Most Ordered",
+          "items": [
+            {
+              "name": "Garlic Chive Griddled Rice",
+              "description": "snap pea, egg (gf)",
+              "price": 11
+            },
+            {
+              "name": "Little Gem Lettuce (GF)",
+              "description": "red endive, romano beans, breakfast radish, goat gouda, roasted pistachios, spring garlic vinaigrette. ( contains nuts)",
+              "price": 20
+            },
+            {
+              "name": "Naked Salmon (GF)",
+              "description": "Choose your fish to be prepared grilled or blacked, select a side sauce. Served with a halved grilled lemon and side salad (lemon vinaigrette) \r\n\r\nOpt for a Crave side for an additional $4.00",
+              "price": 39
+            },
+            {
+              "name": "Handmade Squid Ink Spaghetti",
+              "description": "chopped shrimp, spring garlic, fresno chile, clam stock (s)",
+              "price": 36
+            },
+            {
+              "name": "Lobster Curry",
+              "description": "chu chee curry, charred red onion, japanese eggplant, thai apple eggplant, fresh bamboo shoots (gf, s)",
+              "price": 49
+            },
+            {
+              "name": "Spicy Tuna Crispy Rice",
+              "description": "calabrian chili, sweet soy sauce, golden roe",
+              "price": 24
+            },
+            {
+              "name": "Seared Rare #1 Yellowfin Tuna",
+              "description": "coriander adobo, mexican corn, smashed fingerling potatoes, queso fresco, pickled onions, guajillo salsa (GF)",
+              "price": 45
+            },
+            {
+              "name": "East Coast Oyster",
+              "description": "half dozen freshly shucked east coast served with lemon, packed over ice (gf)",
+              "price": 19
+            },
+            {
+              "name": "Warm Crab Sushi Roll",
+              "description": "avocado puree, charred spring onion (4pc)",
+              "price": 24
+            },
+            {
+              "name": "Grilled Fish Tacos",
+              "description": "ancho chili espresso dusted seabass, black bean puree, chipotle crema, cabbage slaw",
+              "price": 36
+            },
+            {
+              "name": "Rice Dusted Point Judith Calamari",
+              "description": "thai miso sauce, mung bean sprouts, aleppo chile (gf)",
+              "price": 22
+            },
+            {
+              "name": "Roasted Faroe Islands  Salmon",
+              "description": "shepherd’s salad with sun gold tomatoes and farro, sheep’s milk feta, sesame sauce",
+              "price": 39
+            }
+          ]
+        },
+        {
+          "section": "RAW BAR",
+          "items": [
+            {
+              "name": "Snow Crab Claws (4)",
+              "description": "Delicate snow crab claws paired with tangy dipping sauces and fresh lemon wedges.",
+              "price": 28
+            },
+            {
+              "name": "Littleneck Clams",
+              "description": "6 pieces",
+              "price": 17
+            },
+            {
+              "name": "East Coast Oyster",
+              "description": "half dozen freshly shucked east coast served with lemon, packed over ice (gf)",
+              "price": 19
+            },
+            {
+              "name": "Colossal Shrimp Cocktail (3pc)",
+              "description": "colossal shrimp cocktail (3 pieces) (gf, s)",
+              "price": 19
+            }
+          ]
+        },
+        {
+          "section": "APPETIZERS",
+          "items": [
+            {
+              "name": "Little Gem Lettuce (GF)",
+              "description": "red endive, romano beans, breakfast radish, goat gouda, roasted pistachios, spring garlic vinaigrette. ( contains nuts)",
+              "price": 20
+            },
+            {
+              "name": "Rice Dusted Point Judith Calamari",
+              "description": "thai miso sauce, mung bean sprouts, aleppo chile (gf)",
+              "price": 22
+            },
+            {
+              "name": "Spicy Tuna Crispy Rice",
+              "description": "calabrian chili, sweet soy sauce, golden roe",
+              "price": 24
+            },
+            {
+              "name": "Salmon Sashimi Tostada",
+              "description": "avocado puree, calabrian chili oil, grapefruit, crispy shallots (4 pcs)",
+              "price": 20
+            },
+            {
+              "name": "Tri Color Crudo",
+              "description": "seared tuna, faroe island salmon, yellowtail over greek lemon parsley sauce, garlic chips",
+              "price": 26
+            },
+            {
+              "name": "Plancha Grilled Octopus",
+              "description": "roasted sweet potato, roasted fennel, red wine vinaigrette, fennel pollen",
+              "price": 27
+            },
+            {
+              "name": "Burger Sliders (3)",
+              "description": "Mini burgers with fresh lettuce, pickles, and a soft bun. Three sliders per serving.",
+              "price": 24
+            },
+            {
+              "name": "Avocado Tostada",
+              "description": "refried beans, sliced avocado, salsa roja, queso fresco",
+              "price": 16
+            },
+            {
+              "name": "Tuna Carpaccio",
+              "description": "green olive, fennel, blood orange, sea salt, shallot",
+              "price": 26
+            },
+            {
+              "name": "Yellowtail Sashimi",
+              "description": "calamansi vinaigrette, jalapeno cucumber relish",
+              "price": 22
+            },
+            {
+              "name": "Italian Burrata",
+              "description": "creamy cheese, date-blood orange jam, pickled red onion, pistachio, grilled sourdough",
+              "price": 20
+            },
+            {
+              "name": "Grilled Fish Tacos",
+              "description": "ancho chili espresso dusted seabass, black bean puree, chipotle crema, cabbage slaw",
+              "price": 36
+            },
+            {
+              "name": "Warm Crab Sushi Roll",
+              "description": "avocado puree, charred spring onion (4pc)",
+              "price": 24
+            }
+          ]
+        },
+        {
+          "section": "ENTREES",
+          "items": [
+            {
+              "name": "Lobster Curry",
+              "description": "chu chee curry, charred red onion, japanese eggplant, thai apple eggplant, fresh bamboo shoots (gf, s)",
+              "price": 49
+            },
+            {
+              "name": "Naked Salmon (GF)",
+              "description": "Choose your fish to be prepared grilled or blacked, select a side sauce. Served with a halved grilled lemon and side salad (lemon vinaigrette) \r\n\r\nOpt for a Crave side for an additional $4.00",
+              "price": 39
+            },
+            {
+              "name": "Seared Rare #1 Yellowfin Tuna",
+              "description": "coriander adobo, mexican corn, smashed fingerling potatoes, queso fresco, pickled onions, guajillo salsa (GF)",
+              "price": 45
+            },
+            {
+              "name": "Roasted Faroe Islands  Salmon",
+              "description": "shepherd’s salad with sun gold tomatoes and farro, sheep’s milk feta, sesame sauce",
+              "price": 39
+            },
+            {
+              "name": "Cod Milanese",
+              "description": "crispy rice flour bread crumbs, eggless kale caesar salad, harissa aioli",
+              "price": 38
+            },
+            {
+              "name": "Naked Barramundi (GF)",
+              "description": "Select your fish grilled or blackened, select a side sauce.  Served with a side salad (lemon vinaigrette) and grilled halved lemon. \r\n\r\nOpt for a Crave Side for an addition $4",
+              "price": 37
+            },
+            {
+              "name": "Clams pasta",
+              "description": "manila clams, garlic, lemon, butter, parsley, basil, radicchio, toasted bread crumbs",
+              "price": 33
+            },
+            {
+              "name": "Seared Naked Tuna",
+              "description": "Choice of seared tuna with either grilled or blackened finish. Accompanied by a selection of sauces including Dijonnaise, Chimichurri, Thai curry, and Vierge.",
+              "price": 45
+            },
+            {
+              "name": "Handmade Squid Ink Spaghetti",
+              "description": "chopped shrimp, spring garlic, fresno chile, clam stock (s)",
+              "price": 36
+            },
+            {
+              "name": "Oven Roasted Barramundi (GF)",
+              "description": "miso honey glaze, jumbo asparagus, chipotle oil",
+              "price": 37
+            }
+          ]
+        },
+        {
+          "section": "SIDES",
+          "items": [
+            {
+              "name": "Cauliflower",
+              "description": "Za'atar roasted cauliflower with tahini & jalapeño sauce",
+              "price": 12
+            },
+            {
+              "name": "Baby Bok Choy",
+              "description": "anchovy vinaigrette,  local kimchi, shallots, bean sprouts, thai basil",
+              "price": 12
+            },
+            {
+              "name": "Garlic Chive Griddled Rice",
+              "description": "snap pea, egg (gf)",
+              "price": 11
+            },
+            {
+              "name": "Hand Cut Fries",
+              "description": "hand cut, served with ketchup",
+              "price": 10
+            }
+          ]
+        },
+        {
+          "section": "DESSERTS",
+          "items": [
+            {
+              "name": "Cookie Package",
+              "description": "four of our famous homemade chocolate chip cookies, baked daily",
+              "price": 22
+            },
+            {
+              "name": "Harlem Baking Key Lime Pie (GF)",
+              "description": "Creamy key lime filling with a graham cracker crust, offering a tangy and sweet balance. Gluten-free.",
+              "price": 10
+            },
+            {
+              "name": "Harlem Baking Chocolate Mousse",
+              "description": "Rich and creamy semi-dark chocolate mousse, crafted for a smooth and decadent finish.",
+              "price": 10
+            },
+            {
+              "name": "Harlem Baking blueberry Cheesecake (GF)",
+              "description": "Creamy cheesecake with a biscotti crust, topped with a blueberry compote and garnished with a fresh mint leaf. Gluten-free.",
+              "price": 10
+            },
+            {
+              "name": "CFB Cookie",
+              "description": "our famous homemade chocolate chip cookie, baked daily",
+              "price": 9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "crave-fishbar-37494",
+      "name": "Crave Fishbar",
+      "street": "945 2nd Avenue",
+      "neighborhood": "Midtown East",
+      "lat": 40.7551316,
+      "lng": -73.968682,
+      "rating": 4.8,
+      "ratingCount": "200+",
+      "priceRange": "$$$",
+      "doordashUrl": "https://www.doordash.com/store/crave-fishbar-new-york-37494/111996358/",
+      "scrapedAt": "2026-10-23T16:43:20.497Z",
+      "oysterItems": [
+        {
+          "name": "#E. Coast Oysters (6)",
+          "description": "Freshly shucked East Coast oysters served on the half shell, typically accompanied by cocktail sauce and a hint of lemon.",
+          "price": 19,
+          "section": "RAW BAR"
+        }
+      ],
+      "menu": [
+        {
+          "section": "Most Ordered",
+          "items": [
+            {
+              "name": "Oven Roasted Barramundi",
+              "description": "Honey miso glaze, roasted asparagus, toasted quinoa, chili oil",
+              "price": 37
+            },
+            {
+              "name": "Little Gem Salad",
+              "description": "Gem lettuce, red endive, breakfast radish, roasted pistachios, goat Gouda, spring garlic vinaigrette",
+              "price": 22
+            },
+            {
+              "name": "Warm Jonah Crab Roll",
+              "description": "jonah crab, sesame seeds, ghee, thai basil, wrapped in soy paper, (4pcs) (GF)",
+              "price": 24
+            },
+            {
+              "name": "Salmon Tostada (4)",
+              "description": "avocado puree, calabrian chili oil, grapefruit, cilantro,  crispy shallots (GF)",
+              "price": 19
+            },
+            {
+              "name": "Ancho SBass Taco (4)",
+              "description": "ancho chili espresso dusted seabass, black bean puree, chipotle crema, cabbage slaw. Gluten Free",
+              "price": 36
+            },
+            {
+              "name": "#Maine Lobster Roll",
+              "description": "lemon brown butter, celery, homemade old bay, tarragon, side of hand-cut fries",
+              "price": 48
+            },
+            {
+              "name": "Seared Yellowfin Tuna",
+              "description": "coriander adobo, mexican corn, smashed fingerling potatoes,\r\nqueso fresco, pickled onion, guajillo salsa (GF)",
+              "price": 45
+            },
+            {
+              "name": "#Garlic Chive Griddled Rice",
+              "description": "snap pea, egg (gf)",
+              "price": 12
+            },
+            {
+              "name": "Faroe Islands Salmon Entree",
+              "description": "shepard’s salad with sun gold tomatoes and ferro, sheep’s milk feta, sesame sauce.",
+              "price": 38
+            },
+            {
+              "name": "Salmon Crispy Rice",
+              "description": "Faroe Island Salmon, Yuzu Gochujang, Avocado, Dill",
+              "price": 24
+            },
+            {
+              "name": "#Spicy Tuna Roll",
+              "description": "Calabrian Chili, Thai Basil, Broccoli-Rabe",
+              "price": 20
+            },
+            {
+              "name": "#Handcut Fries",
+              "description": "hand cut, served with ketchup",
+              "price": 8
+            }
+          ]
+        },
+        {
+          "section": "APPETIZERS",
+          "items": [
+            {
+              "name": "Ancho SBass Taco (4)",
+              "description": "ancho chili espresso dusted seabass, black bean puree, chipotle crema, cabbage slaw. Gluten Free",
+              "price": 36
+            },
+            {
+              "name": "Salmon Tostada (4)",
+              "description": "avocado puree, calabrian chili oil, grapefruit, cilantro,  crispy shallots (GF)",
+              "price": 19
+            },
+            {
+              "name": "Salmon Crispy Rice",
+              "description": "Faroe Island Salmon, Yuzu Gochujang, Avocado, Dill",
+              "price": 24
+            },
+            {
+              "name": "Yellowtail Sashimi",
+              "description": "calamansi vinaigrette, jalapeño cucumber relish (GF)",
+              "price": 22
+            },
+            {
+              "name": "Avocado Tostada",
+              "description": "refried beans, sliced avocado, salsa roja, queso fresco (GF)",
+              "price": 16
+            },
+            {
+              "name": "Tri Color Crudo",
+              "description": "seared tuna, faroe island salmon, yellowtail over greek lemon parsley sauce, garlic chips (GF)",
+              "price": 26
+            },
+            {
+              "name": "Italian Burrata",
+              "description": "creamy cheese, date-blood orange jam, pickled red onion, pistachio, grilled sourdough (contains nuts)\r\n(Gluten-free without bread)",
+              "price": 20
+            },
+            {
+              "name": "Little Gem Salad",
+              "description": "Gem lettuce, red endive, breakfast radish, roasted pistachios, goat Gouda, spring garlic vinaigrette",
+              "price": 22
+            },
+            {
+              "name": "Ancho SBass Taco (2)",
+              "description": "ancho chili espresso dusted seabass, black bean puree, chipotle crema, cabbage slaw. Gluten Free",
+              "price": 18
+            }
+          ]
+        },
+        {
+          "section": "ENTREES",
+          "items": [
+            {
+              "name": "Oven Roasted Barramundi",
+              "description": "Honey miso glaze, roasted asparagus, toasted quinoa, chili oil",
+              "price": 37
+            },
+            {
+              "name": "#Maine Lobster Roll",
+              "description": "lemon brown butter, celery, homemade old bay, tarragon, side of hand-cut fries",
+              "price": 48
+            },
+            {
+              "name": "Simple Salmon",
+              "description": "naked fish grilled, roasted or blackened \r\ncomes with a choice of a side",
+              "price": 43
+            },
+            {
+              "name": "Seared Yellowfin Tuna",
+              "description": "coriander adobo, mexican corn, smashed fingerling potatoes,\r\nqueso fresco, pickled onion, guajillo salsa (GF)",
+              "price": 45
+            },
+            {
+              "name": "Faroe Islands Salmon Entree",
+              "description": "shepard’s salad with sun gold tomatoes and ferro, sheep’s milk feta, sesame sauce.",
+              "price": 38
+            },
+            {
+              "name": "Squid Ink Spaghetti",
+              "description": "chopped shrimp, spring garlic, fresno chile, clam stock (S)",
+              "price": 34
+            },
+            {
+              "name": "Homemade Cavatelli",
+              "description": "vine ripened tomato ragout, whipped ricotta, basil purée",
+              "price": 31
+            },
+            {
+              "name": "Simple Barramundi",
+              "description": "naked fish grilled, roasted or blackened \r\ncomes with a choice of a side",
+              "price": 37
+            },
+            {
+              "name": "Simple Tuna",
+              "description": "naked fish grilled, roasted or blackened \r\ncomes with a choice of a side",
+              "price": 46
+            },
+            {
+              "name": "Clam Spaghetti",
+              "description": "manila clams, garlic, lemon, butter, parsley, basil, radicchio, toasted bread crumbs",
+              "price": 33
+            },
+            {
+              "name": "Lobster Curry",
+              "description": "chu chee curry, charred red onion, japanese eggplant, thai apple eggplant, fresh bamboo shoots",
+              "price": 52
+            },
+            {
+              "name": "Icelandic Cod",
+              "description": "crispy rice flour bread crumbs, eggless kale caesar salad, harissa aioli (gluten free)",
+              "price": 39
+            }
+          ]
+        },
+        {
+          "section": "RAW BAR",
+          "items": [
+            {
+              "name": "Colossal Shrimp Cocktail (3pc)(GF)",
+              "description": "Cocktail Sauce, Mustard Remoulade.",
+              "price": 18
+            },
+            {
+              "name": "#E. Coast Oysters (6)",
+              "description": "Freshly shucked East Coast oysters served on the half shell, typically accompanied by cocktail sauce and a hint of lemon.",
+              "price": 19
+            },
+            {
+              "name": "#Cherrystone (6)",
+              "description": "Cherrystone clams served with lemon wedges, cocktail sauce, and a garnish of fresh greens.",
+              "price": 16
+            },
+            {
+              "name": "Jonah Crab Claws",
+              "description": "Four pieces of snow crab tossed in olive oil and salt. Served with our house made mustard remoulade and cocktail sauces. (GF)",
+              "price": 27
+            }
+          ]
+        },
+        {
+          "section": "SMALL BITES SUSHIBAR",
+          "items": [
+            {
+              "name": "Salmon Crispy Rice",
+              "description": "Faroe Island Salmon, Yuzu Gochujang, Avocado, Dill",
+              "price": 24
+            },
+            {
+              "name": "#Edamame",
+              "description": "With Celtic Sea Salt",
+              "price": 6.5
+            },
+            {
+              "name": "#Miso Soup",
+              "description": "Roasted Pink Mushrooms, Black Garlic Oil",
+              "price": 6
+            }
+          ]
+        },
+        {
+          "section": "DRESSED SASHIMI SUSHIBAR",
+          "items": [
+            {
+              "name": "#Dressed Sea Bream Sashimi",
+              "description": "Charred Japanese Miso Eggplant, Smoked Olive Oil, White Soy Dashi, Furikake, Lime zest",
+              "price": 18
+            },
+            {
+              "name": "#Dressed Fluke Sashimi",
+              "description": "Ponzu, Endive, Scallion, Wasabi Peas, Hot Sesame Oil",
+              "price": 21
+            },
+            {
+              "name": "#Dressed Big Eye Tuna Sashimi",
+              "description": "Persian Cucumbers, Asian Pear, Radish, Wasabi-Soy Vinaigrette",
+              "price": 19
+            },
+            {
+              "name": "#Dressed Salmon Sashimi",
+              "description": "Chinese Mustard, Lemon, Thyme, Shiso, Crispy Wonton",
+              "price": 17
+            }
+          ]
+        },
+        {
+          "section": "DRESSED NIGIRI SUSHIBAR (1pc)",
+          "items": [
+            {
+              "name": "D Otoro Nigiri 1pc",
+              "description": "Mezcal Nikiri, Scallion",
+              "price": 14
+            },
+            {
+              "name": "D Uni Nigiri 1pc",
+              "description": "Miso Powder",
+              "price": 12
+            },
+            {
+              "name": "D Big Eye Tuna Nigiri 1pc",
+              "description": "Yuzu Kosho, Aji Verde",
+              "price": 7
+            },
+            {
+              "name": "D Salmon Roe Nigiri 1pc",
+              "description": "Creme Fraiche, White Balsamic",
+              "price": 7
+            },
+            {
+              "name": "D Eel Nigiri 1pc",
+              "description": "House Made Eel Sauce",
+              "price": 7.5
+            },
+            {
+              "name": "D Salmon Nigiri 1pc",
+              "description": "Yuzu Salt",
+              "price": 6
+            },
+            {
+              "name": "D Sea Bream Nigiri 1pc",
+              "description": "Lemon, Miso Powder",
+              "price": 5.5
+            },
+            {
+              "name": "D Fluke Nigiri 1pc",
+              "description": "Black Tahini",
+              "price": 6.5
+            },
+            {
+              "name": "D Mushroom Nigiri 1pc",
+              "description": "Soy and Mirin",
+              "price": 4.5
+            },
+            {
+              "name": "D Trout Nigiri 1pc",
+              "description": "Nikiri, Salmon Roe",
+              "price": 6.5
+            },
+            {
+              "name": "D Gulf Shrimp 1pc",
+              "description": "Steamed with Mirin and Ginger",
+              "price": 6
+            },
+            {
+              "name": "D Scallop Nigiri 1pc",
+              "description": "Brown Butter, Lemon, Sea Salt",
+              "price": 7.5
+            },
+            {
+              "name": "D Kampachi Nigiri 1pc",
+              "description": "Shiso Pesto",
+              "price": 7
+            }
+          ]
+        },
+        {
+          "section": "NAKED NIGIRI (1PC)",
+          "items": [
+            {
+              "name": "Naked Big Eye Nigiri",
+              "description": "Bigeye tuna on hand-pressed seasoned sushi rice.",
+              "price": 7
+            },
+            {
+              "name": "Naked Salmon Nigiri",
+              "description": "Thinly sliced raw salmon served on hand-pressed seasoned sushi rice. May contain raw or undercooked ingredients.",
+              "price": 5
+            },
+            {
+              "name": "Naked Fluke Nigiri",
+              "description": "Thinly sliced fluke atop hand-pressed seasoned sushi rice, typically enjoyed as a raw delicacy in Japanese cuisine.",
+              "price": 5
+            },
+            {
+              "name": "Naked Trout Nigiri",
+              "description": "Trout on hand-pressed seasoned sushi rice. May contain raw or undercooked ingredients, increasing the risk of foodborne illness.",
+              "price": 5.5
+            },
+            {
+              "name": "Naked Seabream Nigiri",
+              "description": "Thinly sliced seabream on a small bed of hand-pressed sushi rice, typically accompanied by wasabi and soy sauce for dipping.",
+              "price": 4.5
+            },
+            {
+              "name": "Naked Otoro Nigiri",
+              "description": "Thinly sliced premium bluefin tuna belly typically served on hand-pressed seasoned sushi rice.",
+              "price": 14
+            },
+            {
+              "name": "Naked Uni Nigiri",
+              "description": "Sea urchin served on hand-pressed seasoned sushi rice, offering a light, sweet, and somewhat briny flavor typical of uni nigiri.",
+              "price": 15
+            },
+            {
+              "name": "Naked Eel Nigiri",
+              "description": "Grilled eel typically served on seasoned sushi rice, enhanced with eel sauce and a sprinkle of sesame seeds.",
+              "price": 7
+            },
+            {
+              "name": "Naked Scallop Nigiri",
+              "description": "Scallop delicately placed on hand-pressed sushi rice, typically accompanied by subtle hints of mayonnaise and masago for added texture.",
+              "price": 5.5
+            },
+            {
+              "name": "Naked Kampachi Nigiri",
+              "description": "Kampachi served on hand-pressed seasoned sushi rice.",
+              "price": 7
+            }
+          ]
+        },
+        {
+          "section": "NAKED SASHIMI (3PC)",
+          "items": [
+            {
+              "name": "Naked Salmon Sashimi",
+              "description": "Thinly sliced raw salmon, typically served with a hint of black pepper ponzu and scallions.",
+              "price": 14
+            },
+            {
+              "name": "Naked Otoro Sashimi",
+              "description": "Thick cuts of otoro, the prized fatty tuna belly, served as sashimi.",
+              "price": 40
+            },
+            {
+              "name": "Naked Big Eye Sashimi",
+              "description": "Thinly sliced big eye tuna, served raw as sashimi. Typically accompanied by traditional garnishes like fresh wasabi and pickled ginger.",
+              "price": 19
+            },
+            {
+              "name": "Naked Fluke Sashimi",
+              "description": "Thinly sliced raw fluke, served as sashimi.",
+              "price": 14
+            },
+            {
+              "name": "Naked Trout Sashimi",
+              "description": "Thinly sliced raw trout served as sashimi, typically accompanied by fresh wasabi.",
+              "price": 15
+            },
+            {
+              "name": "Naked Sea Bream Sashimi",
+              "description": "Thinly sliced, raw sea bream typically served as sashimi, offering a delicate taste of this popular Japanese dish.",
+              "price": 12
+            },
+            {
+              "name": "Naked Uni Sashimi",
+              "description": "Sea urchin served as sashimi, offering three pieces of raw uni, commonly known for its creamy texture and delicate oceanic flavor.",
+              "price": 45
+            },
+            {
+              "name": "Naked Eel Sashimi",
+              "description": "Thinly sliced eel sashimi typically served raw, highlighting the delicate flavor of the eel.",
+              "price": 21
+            },
+            {
+              "name": "Naked Kampachi Sashimi",
+              "description": "Thinly sliced kampachi, typically accompanied by ponzu sauce and scallions, served raw in a traditional Japanese style.",
+              "price": 19
+            },
+            {
+              "name": "Naked Scallop Sashimi",
+              "description": "Thinly sliced, raw scallops served as sashimi, showcasing their natural sweetness and delicate texture.",
+              "price": 15
+            }
+          ]
+        },
+        {
+          "section": "SUSHI ROLLS",
+          "items": [
+            {
+              "name": "Warm Jonah Crab Roll",
+              "description": "jonah crab, sesame seeds, ghee, thai basil, wrapped in soy paper, (4pcs) (GF)",
+              "price": 24
+            },
+            {
+              "name": "#Lobster Sushi Roll",
+              "description": "Spicy Mayo, Avocado, Wasabi Salt",
+              "price": 26
+            },
+            {
+              "name": "#Yellowtail (kampachi) Roll",
+              "description": "Jalapeno, Herbs, Truffle-Yuzu Sauce",
+              "price": 21
+            },
+            {
+              "name": "#Maine Eel Roll",
+              "description": "Persian Cucumber, Pink Oyster Mushrooms, Kabayaki Sauce",
+              "price": 22
+            },
+            {
+              "name": "#Spicy Tuna Roll",
+              "description": "Calabrian Chili, Thai Basil, Broccoli-Rabe",
+              "price": 20
+            },
+            {
+              "name": "#Salmon Avocado Ume Roll",
+              "description": "Ume, Shiso",
+              "price": 12
+            }
+          ]
+        },
+        {
+          "section": "LARGE PLATES SUSHIBAR",
+          "items": [
+            {
+              "name": "Squid Ink Spaghetti",
+              "description": "chopped shrimp, spring garlic, fresno chile, clam stock (S)",
+              "price": 34
+            },
+            {
+              "name": "Lobster Curry",
+              "description": "chu chee curry, charred red onion, japanese eggplant, thai apple eggplant, fresh bamboo shoots",
+              "price": 52
+            }
+          ]
+        },
+        {
+          "section": "SIDES",
+          "items": [
+            {
+              "name": "#Garlic Chive Griddled Rice",
+              "description": "snap pea, egg (gf)",
+              "price": 12
+            },
+            {
+              "name": "#Baby Bok Choi",
+              "description": "anchovy vinaigrette, local kimchi, shallots, bean sprouts, thai basil (GF)",
+              "price": 12
+            },
+            {
+              "name": "#Watermelon Side",
+              "description": "scallion, ginger, olive oil, feta, popped quinoa",
+              "price": 12
+            },
+            {
+              "name": "#Handcut Fries",
+              "description": "hand cut, served with ketchup",
+              "price": 8
+            },
+            {
+              "name": "#Za'atar Roasted Cauliflower",
+              "description": "tahini jalapeño sauce",
+              "price": 13
+            }
+          ]
+        },
+        {
+          "section": "DESSERTS",
+          "items": [
+            {
+              "name": "#CFB Cookie",
+              "description": "homemade chocolate chip cookie baked multiple times daily",
+              "price": 9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "docks",
+      "name": "Docks Oyster Bar and Seafood Grill",
+      "street": "633 3rd Ave",
+      "neighborhood": "Midtown East",
+      "lat": 40.74971799273044,
+      "lng": -73.97519001737237,
+      "rating": 4.7,
+      "ratingCount": "50",
+      "priceRange": "$$",
+      "doordashUrl": "https://www.doordash.com/store/docks-oyster-bar-and-seafood-grill-new-york-37831329/85862754/",
+      "scrapedAt": "2026-10-23T16:41:15.355Z",
+      "oysterItems": [
+        {
+          "name": "Smoked Oysters Rockefeller",
+          "description": "spinach, parmesan, bread crumbs",
+          "price": 25,
+          "section": "Shareables"
+        }
+      ],
+      "menu": [
+        {
+          "section": "Most Ordered",
+          "items": [
+            {
+              "name": "Key Lime Pie",
+              "description": "Our Signature",
+              "price": 13
+            }
+          ]
+        },
+        {
+          "section": "Shareables",
+          "items": [
+            {
+              "name": "Smoked Oysters Rockefeller",
+              "description": "spinach, parmesan, bread crumbs",
+              "price": 25
+            },
+            {
+              "name": "Lobster Kimchi Fried Rice",
+              "description": "ginger, bok choy, spicy sesame oil",
+              "price": 26
+            },
+            {
+              "name": "Bread Basket Refill",
+              "description": "Assorted breads typically including sourdough and naan, accompanied by a selection of butters or spreads for sharing.",
+              "price": 3
+            },
+            {
+              "name": "Fried Calamari",
+              "description": "choice of thai chili, marinara or rhode island",
+              "price": 23
+            },
+            {
+              "name": "Spicy Tuna Tartare",
+              "description": "avocado, eel sauce, wonton crisp",
+              "price": 24
+            },
+            {
+              "name": "Salmon Crudo",
+              "description": "yuzu kosho aioli, shiso radish sprouts, trout roe",
+              "price": 26
+            },
+            {
+              "name": "Prince Edward Island Mussels",
+              "description": "mariniere or provencal, house-cut french fries",
+              "price": 34
+            },
+            {
+              "name": "Grilled Spanish Octopus",
+              "description": "romesco, nicoise olives, peppadew peppers",
+              "price": 25
+            },
+            {
+              "name": "Tuna Carpaccio",
+              "description": "capers, watermelon, pickled fennel, chives, crostini",
+              "price": 26
+            }
+          ]
+        },
+        {
+          "section": "Soups & Salads",
+          "items": [
+            {
+              "name": "Five Lettuce Caesar",
+              "description": "housemade caesar dressing, parmesan, croutons \r\n**add chicken, salmon, shrimp, or tuna",
+              "price": 20
+            },
+            {
+              "name": "Seafood Cobb",
+              "description": "lobster, crabmeat, shrimp, avocado, blue cheese, boiled egg, bacon, scallions, tomato, buttermilk ranch dressing served on the side",
+              "price": 40
+            },
+            {
+              "name": "Brussels Sprout Salad",
+              "description": "Shredded brussels sprouts combined with dried cranberries, feta cheese, and shallots, dressed in a house-made red wine vinaigrette.",
+              "price": 20
+            },
+            {
+              "name": "Iceberg Wedge",
+              "description": "blue cheese, red onion, bacon, tomato\r\n**add chicken, salmon, shrimp, or tuna",
+              "price": 20
+            },
+            {
+              "name": "New England Clam Chowder",
+              "description": "fresh clams, bacon, potato, cream",
+              "price": 19
+            },
+            {
+              "name": "Roasted Beet Salad",
+              "description": "garbanzo, Castelvetrano olives, pickled pearl onions, feta",
+              "price": 21
+            }
+          ]
+        },
+        {
+          "section": "Sushi Rolls",
+          "items": [
+            {
+              "name": "Rock & Roll  Maki",
+              "description": "crispy rock shrimp, cucumber, sriracha kewpie",
+              "price": 26
+            },
+            {
+              "name": "Blue Crab California Roll",
+              "description": "jumbo lump crab, avocado",
+              "price": 24
+            },
+            {
+              "name": "Spicy Hamachi Roll",
+              "description": "avocado, tuna, jalapeno",
+              "price": 26
+            },
+            {
+              "name": "Rising Sun Roll",
+              "description": "tuna, avocado, spicy salmon",
+              "price": 26
+            },
+            {
+              "name": "Firecracker Roll",
+              "description": "spicy crab, avocado, spicy salmon, tempura flakes",
+              "price": 26
+            },
+            {
+              "name": "Salmon Crudo",
+              "description": "yuzu kosho aioli, shiso radish sprouts, trout roe",
+              "price": 26
+            },
+            {
+              "name": "Yellowfin Tuna Roll",
+              "description": "nori, sesame",
+              "price": 23
+            }
+          ]
+        },
+        {
+          "section": "Frites",
+          "items": [
+            {
+              "name": "American Wagyu Flat Iron",
+              "description": "parmesan herb steak fries",
+              "price": 46
+            },
+            {
+              "name": "8 oz Filet Mignon",
+              "description": "truffle pomme puree, charred sweet corn succotash, crispy shallots",
+              "price": 59
+            },
+            {
+              "name": "NY Strip Steak",
+              "description": "parmesan steak fries & bordelaise sauce",
+              "price": 65
+            },
+            {
+              "name": "Docks Fish & Chips",
+              "description": "nordic cod, house cut french fries, cole slaw",
+              "price": 34
+            },
+            {
+              "name": "Prince Edward Island Mussels",
+              "description": "mariniere or provencal, house-cut french fries",
+              "price": 34
+            }
+          ]
+        },
+        {
+          "section": "Main Salads & Sandwich",
+          "items": [
+            {
+              "name": "Seafood Cobb",
+              "description": "lobster, crabmeat, shrimp, avocado, blue cheese, boiled egg, bacon, scallions, tomato, buttermilk ranch dressing served on the side",
+              "price": 40
+            },
+            {
+              "name": "Dock's Sirloin Burger",
+              "description": "smoked tomato aioli, pickled red onion relish, iceberg lettuce, sesame bun",
+              "price": 29
+            },
+            {
+              "name": "Crab Cake Sandwich",
+              "description": "brioche bun, rémoulade, served with house cut french fries & cole slaw",
+              "price": 35
+            },
+            {
+              "name": "Maine Lobster Roll",
+              "description": "fresh maine  lobster, buttered bun, cucumber mayo, served with house cut french fries",
+              "price": 39
+            }
+          ]
+        },
+        {
+          "section": "Simply Prepared",
+          "items": [
+            {
+              "name": "Simply Prepared Bronzino",
+              "description": "fennel potato purèe, sugar snap peas, rainbow carrots, fava beans, asparagus, herb pistou",
+              "price": 41
+            },
+            {
+              "name": "Maryland Crab Cakes",
+              "description": "fennel potato purèe, sugar snap peas, rainbow carrots, fava beans, asparagus, herb pistou",
+              "price": 46
+            },
+            {
+              "name": "Simply Prepared Yellow Fin Tuna",
+              "description": "fennel potato purèe, sugar snap peas, rainbow carrots, fava beans, asparagus, herb pistou",
+              "price": 45
+            },
+            {
+              "name": "Seafood Cioppino",
+              "description": "A classic seafood stew featuring shrimp, mussels, clams, and calamari in a rich tomato broth, often complemented by a hint of wine and herbs.",
+              "price": 42
+            },
+            {
+              "name": "Chicken Croquette",
+              "description": "Murray's farm chicken breast with a confit chicken croquette, potato puree, & morel mushrooms",
+              "price": 39
+            },
+            {
+              "name": "Simply Prepared Organic Salmon",
+              "description": "sweet corn veloute, sugar snap peas, summer squash, tomato vinaigrette",
+              "price": 43
+            },
+            {
+              "name": "Pan Seared Diver Scallops",
+              "description": "fennel potato purèe, sugar snap peas, rainbow carrots, fava beans, asparagus, herb pistou",
+              "price": 47
+            }
+          ]
+        },
+        {
+          "section": "Pasta",
+          "items": [
+            {
+              "name": "Pumpkin Tortelliini w/ Lobster",
+              "description": "lemon, tarragon, parmesan crema",
+              "price": 40
+            },
+            {
+              "name": "Vegetarian Risotto",
+              "description": "Mixed vegetables, garlic, white wine, and napoli sauce.",
+              "price": 35
+            },
+            {
+              "name": "Jumbo Shrimp Risotto",
+              "description": "shrimp, clams, calamari, saffron, zucchini, sun gold tomatoes",
+              "price": 42
+            },
+            {
+              "name": "Linguini With Freshly Shucked Littlenecks",
+              "description": "fresh shucked littleneck clams, house-made marinara or white wine sauce",
+              "price": 35
+            }
+          ]
+        },
+        {
+          "section": "Lobster",
+          "items": [
+            {
+              "name": "1 lb Lobster",
+              "description": "served with baked potato and coleslaw",
+              "price": 48
+            },
+            {
+              "name": "1.5 lb Lobster",
+              "description": "served with baked potato and coleslaw",
+              "price": 72
+            },
+            {
+              "name": "2 lb Lobster",
+              "description": "served with baked potato and coleslaw",
+              "price": 96
+            },
+            {
+              "name": "Lobster Entrée",
+              "description": "1 1/2 lb baked stuffed lobster, lump crab, herb butter, baked potato, coleslaw",
+              "price": 85
+            },
+            {
+              "name": "Surf & Turf",
+              "description": "1lb lobster, 8oz filet mignon, baked potato, coleslaw",
+              "price": 110
+            }
+          ]
+        },
+        {
+          "section": "Sides",
+          "items": [
+            {
+              "name": "Yukon Gold Potato Puree",
+              "description": "sriracha aioli",
+              "price": 15
+            },
+            {
+              "name": "Maple Glazed Carrots",
+              "description": "Grilled asparagus typically features tender spears seasoned with olive oil, garlic, and a hint of lemon, offering a simple yet satisfying side dish.",
+              "price": 15
+            },
+            {
+              "name": "French Fries",
+              "description": "Deep-fried potato strips, typically seasoned with salt.",
+              "price": 15
+            },
+            {
+              "name": "Crispy Brussels Sprouts",
+              "description": "Sweet corn succotash typically includes sautéed sweet corn, bell peppers, and lima beans, creating a vibrant side dish.",
+              "price": 15
+            },
+            {
+              "name": "Parmesan Truffled Fries",
+              "description": "French fries tossed in truffle oil, topped with parmesan cheese and fresh parsley.",
+              "price": 15
+            },
+            {
+              "name": "Simply Prepared Vegetables",
+              "description": "Fresh seasonal vegetables, typically including broccoli, carrots, and green beans, lightly steamed until tender.",
+              "price": 15
+            },
+            {
+              "name": "Parmesan Steak Frites",
+              "description": "Hand-cut steak fries topped with parmesan cheese, typically served alongside pan-seared steak.",
+              "price": 15
+            },
+            {
+              "name": "Baked Potato",
+              "description": "Baked potato typically includes butter, sour cream, cheese, bacon, and chives.",
+              "price": 15
+            },
+            {
+              "name": "Double Slaw",
+              "description": "A blend of green and red cabbage, typically mixed with carrots and a tangy, vinegar-based dressing.",
+              "price": 10
+            },
+            {
+              "name": "Creamed Spinach",
+              "description": "soy tahini, crunchy garlic",
+              "price": 15
+            },
+            {
+              "name": "Charred Broccolini",
+              "description": "Lightly sautéed sugar snap peas, typically seasoned with olive oil and a hint of garlic, offering a crisp and fresh taste.",
+              "price": 15
+            }
+          ]
+        },
+        {
+          "section": "Desserts",
+          "items": [
+            {
+              "name": "Triple Chocolate Pudding",
+              "description": "Triple chocolate pudding typically includes layers of dark, milk, and white chocolate pudding, creating a rich and creamy dessert experience.",
+              "price": 13
+            },
+            {
+              "name": "Flourless Chocolate Cake",
+              "description": "creme anglaise",
+              "price": 14
+            },
+            {
+              "name": "Assorted Fresh Fruit",
+              "description": "Seasonal Fruit",
+              "price": 12
+            },
+            {
+              "name": "New York Cheesecake",
+              "description": "Traditional",
+              "price": 14
+            },
+            {
+              "name": "Key Lime Pie",
+              "description": "Our Signature",
+              "price": 13
+            },
+            {
+              "name": "Affogato",
+              "description": "creme anglaise",
+              "price": 14
+            }
+          ]
+        },
+        {
+          "section": "Dessert Cocktails",
+          "items": [
+            {
+              "name": "The Italian Job",
+              "description": "Typically includes vodka, amaretto, and coffee liqueur, mixed with a hint of cream for a smooth finish.",
+              "price": 23
+            }
+          ]
+        },
+        {
+          "section": "Amaro",
+          "items": [
+            {
+              "name": "Montenegro DBL",
+              "description": "A traditional amaro drink, typically featuring a blend of botanicals and herbs, resulting in a bittersweet, aromatic flavor profile.",
+              "price": 30
+            },
+            {
+              "name": "Nonino DBL",
+              "description": "Italian amaro with a balanced blend of herbs, roots, and citrus, offering a bittersweet profile.",
+              "price": 30
+            },
+            {
+              "name": "Nonino SGL",
+              "description": "A traditional Italian amaro, typically includes herbal and citrus notes with a mildly bitter finish. Often enjoyed as a digestif.",
+              "price": 15
+            },
+            {
+              "name": "Averna DBL",
+              "description": "A double serving of Averna, a traditional Italian amaro known for its bittersweet herbal flavor profile.",
+              "price": 28
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "checkedWithoutOysters": [
+    {
+      "id": "ama-raw-bar",
+      "name": "Ama raw bar",
+      "street": null,
+      "doordashUrl": "https://www.doordash.com/store/ama-raw-bar-new-york-985548/45412348/"
+    },
+    {
+      "id": "jeffreys-grocery",
+      "name": "Jeffrey's Grocery",
+      "street": "172 Waverly Place",
+      "doordashUrl": "https://www.doordash.com/store/jeffrey's-grocery-new-york-177568/2660430/"
+    },
+    {
+      "id": "the-dutch",
+      "name": "The Dutch",
+      "street": null,
+      "doordashUrl": "https://www.doordash.com/store/the-dutch-new-york-705292/98411746/"
+    }
+  ]
+}

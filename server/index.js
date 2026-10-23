@@ -16,6 +16,7 @@ app.get('/api/restaurants', async (req, res) => {
   res.json({
     title: meta.get('title'),
     source: meta.get('source'),
+    mock: meta.get('mock') ?? false,
     checkedWithoutOysters: meta.get('checkedWithoutOysters') ?? [],
     restaurants: restaurants.docs.map((doc) => doc.data()),
   })
