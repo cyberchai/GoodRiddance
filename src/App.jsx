@@ -43,10 +43,10 @@ function pageFromHash() {
 }
 
 const profileMessages = {
-  switch: `${restaurant.name} is the only store in this prototype.`,
-  signout: 'Signing out is turned off in this prototype.',
-  settings: 'Settings aren’t part of this prototype.',
-  help: 'Help isn’t part of this prototype.',
+  switch: `${restaurant.name} is your only store.`,
+  signout: 'Signing out isn’t available yet.',
+  settings: 'Settings aren’t available yet.',
+  help: 'Help isn’t available yet.',
 }
 
 export default function App() {
@@ -123,7 +123,6 @@ export default function App() {
         <header className="topbar">
           <div className="crumbs">Merchant Portal <Icon name="chevron" size={13} /><strong>{current.label}</strong></div>
           <div className="topbar-right">
-            <span className="prototype-pill"><span /> Prototype · mock data</span>
             <ProfileMenu onAction={(action) => setToast(profileMessages[action])} />
           </div>
         </header>
@@ -142,7 +141,7 @@ export default function App() {
         </main>
 
         <footer>
-          <span>DoorDash Merchant Portal · Prototype</span>
+          <span>DoorDash Merchant Portal</span>
           <span>GoodRiddance × {bop.name}</span>
         </footer>
       </div>

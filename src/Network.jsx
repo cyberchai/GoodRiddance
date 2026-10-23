@@ -44,7 +44,7 @@ export default function Network({ onInvite }) {
       <div className="network-map-panel">
         <div className="map-toolbar">
           <span><Icon name="pin" size={15} /> New York City</span>
-          <span className="muted">{data.mock ? 'Mock data' : 'Live DoorDash data'}</span>
+          <span className="muted">{data.mock ? 'Mock data' : 'Data from DoorDash'}</span>
         </div>
         <RestaurantMap place={selected} />
         {selected && (
